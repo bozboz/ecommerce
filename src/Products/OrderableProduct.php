@@ -16,8 +16,6 @@ use Bozboz\Ecommerce\Order\OrderableException;
 
 class OrderableProduct extends Product implements Orderable
 {
-	use SearchableTrait;
-
 	public $table = 'products';
 
 	public function items()

@@ -14,7 +14,7 @@ class Product extends Base
 {
 	protected $table = 'products';
 
-	use MediableTrait, DynamicSlugTrait, MemberPricesTrait;
+	use MediableTrait, DynamicSlugTrait;
 
 	protected $fillable = [
 		'name',
