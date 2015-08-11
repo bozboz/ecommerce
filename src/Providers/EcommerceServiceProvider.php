@@ -97,6 +97,10 @@ class EcommerceServiceProvider extends ServiceProvider
 		require __DIR__ . '/../helpers.php';
 		require __DIR__ . '/../Http/routes.php';
 
+		$this->package('bozboz/checkout');
+
+		$this->app['view']->addNamespace('checkout', __DIR__ . '/../../resources/views');
+
 		$this->registerEvents();
 	}
 

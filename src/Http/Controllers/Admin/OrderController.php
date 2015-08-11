@@ -11,7 +11,7 @@ use Bozboz\Ecommerce\Payment\Exception as PaymentException;
 
 class OrderController extends ModelAdminController
 {
-	protected $editView = 'orders.admin.edit';
+	protected $editView = 'ecommerce::orders.admin.edit';
 	private $refund;
 
 	public function __construct(OrderDecorator $decorator, Refund $refund)
@@ -24,7 +24,7 @@ class OrderController extends ModelAdminController
 	public function index()
 	{
 		$report = new Report($this->decorator);
-		$report->overrideView('orders.admin.overview');
+		$report->overrideView('ecommerce::orders.admin.overview');
 		return $report->render(array(
 			'controller' => get_class($this),
 			'canCreate' => false
