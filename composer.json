@@ -10,10 +10,15 @@
     "require": {
         "bozboz/admin": "1.*"
     },
-    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://laravel-packages.staging.bozboz.co.uk"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Bozboz\\Ecommerce\\": "src"
-        },
+        }
     }
 }
