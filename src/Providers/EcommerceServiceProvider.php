@@ -95,6 +95,7 @@ class EcommerceServiceProvider extends ServiceProvider
 	public function boot()
 	{
 		require __DIR__ . '/../helpers.php';
+		require __DIR__ . '/../Http/routes.php';
 
 		$this->registerEvents();
 	}
