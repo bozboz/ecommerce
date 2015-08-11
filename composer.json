@@ -1,0 +1,19 @@
+{
+    "name": "bozboz/ecommerce",
+    "description": "Shop/payment functionality for Bozboz sites",
+    "authors": [
+        {
+            "name": "Sam King",
+            "email": "sdking02@gmail.com"
+        }
+    ],
+    "require": {
+        "bozboz/admin": "1.*"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Bozboz\\Ecommerce\\": "src"
+        },
+    }
+}
