@@ -21,7 +21,7 @@
             "Bozboz\\Ecommerce\\": "src/Bozboz/Ecommerce"
         },
         "files": [
-            "helpers.php"
+            "src/helpers.php"
         ]
     }
 }
