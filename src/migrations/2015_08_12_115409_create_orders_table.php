@@ -1,0 +1,56 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+
+class CreateOrdersTable extends Migration {
+
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::create('orders', function(Blueprint $table)
+		{
+			$table->engine = 'InnoDB';
+
+			$table->increments('id');
+			$table->integer('state_id')->unsigned();
+			$table->string('customer_email');
+			$table->string('customer_first_name');
+			$table->string('customer_last_name');
+			$table->string('customer_phone');
+			$table->string('company');
+			$table->integer('user_id')->unsigned()->nullable();
+			$table->integer('shipping_address_id')->unsigned();
+			$table->integer('billing_address_id')->unsigned();
+			$table->string('payment_method');
+			$table->string('payment_ref')->nullable();
+			$table->string('card_identifier', 4);
+			$table->text('payment_data');
+			$table->integer('parent_order_id')->unsigned()->nullable();
+			$table->timestamps();
+			$table->softDeletes();
+
+			$table->foreign('state_id')->references('id')->on('order_states')->onDelete('restrict');
+			$table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+			$table->foreign('shipping_address_id')->references('id')->on('addresses')->onDelete('restrict');
+			$table->foreign('billing_address_id')->references('id')->on('addresses')->onDelete('restrict');
+			$table->foreign('parent_order_id')->references('id')->on('orders')->onDelete('set null');
+		});
+	}
+
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::drop('orders');
+	}
+
+}
