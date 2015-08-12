@@ -99,8 +99,6 @@ class EcommerceServiceProvider extends ServiceProvider
 
 		$this->package('bozboz/checkout');
 
-		$this->app['view']->addNamespace('checkout', __DIR__ . '/../../resources/views');
-
 		$this->registerEvents();
 	}
 
@@ -136,6 +134,5 @@ class EcommerceServiceProvider extends ServiceProvider
 			'item.purchased: Bozboz\Ecommerce\Products\OrderableProduct',
 			'Bozboz\Ecommerce\Products\ProductPurchasedEvent'
 		);
-
 	}
 }
