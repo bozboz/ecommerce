@@ -9,19 +9,19 @@ use Bozboz\Admin\Traits\DynamicSlugTrait;
 use Illuminate\Validation\Validator;
 use Illuminate\Support\Facades\Validator as ValidationFactory;
 use Bozboz\MediaLibrary\Models\MediableTrait;
+use Bozboz\Ecommerce\Products\Pricing\PriceTrait;
 
 class Product extends Base
 {
 	protected $table = 'products';
 
-	use MediableTrait, DynamicSlugTrait;
+	use MediableTrait, DynamicSlugTrait, PriceTrait;
 
 	protected $fillable = [
 		'name',
 		'slug',
 		'description',
 		'category_id',
-		'requires_email_signup_for_non_members',
 		'variation_of_id',
 		'stock_level',
 		'weight',
@@ -40,7 +40,8 @@ class Product extends Base
 	protected $nullable = [
 		'manufacturer_id',
 		'category_id',
-		'variation_of_id'
+		'variation_of_id',
+		'shipping_band_id',
 	];
 
 	public function getValidator()

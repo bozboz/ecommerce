@@ -16,8 +16,6 @@ use Bozboz\Ecommerce\Order\OrderableException;
 
 class OrderableProduct extends Product implements Orderable
 {
-	public $table = 'products';
-
 	public function items()
 	{
 		return $this->morphMany('Bozboz\Ecommerce\Order\Item', 'orderable');

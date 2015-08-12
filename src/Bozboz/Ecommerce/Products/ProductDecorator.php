@@ -2,33 +2,39 @@
 
 namespace Bozboz\Ecommerce\Products;
 
-use Illuminate\Support\Facades\HTML;
-use Illuminate\Database\Eloquent\Builder;
-
 use Bozboz\Admin\Decorators\ModelAdminDecorator;
-use Bozboz\Admin\Reports\Filters\ArrayListingFilter;
-use Bozboz\Admin\Reports\Filters\SearchListingFilter;
-use Bozboz\Admin\Fields\TextField;
-use Bozboz\Admin\Fields\HTMLEditorField;
-use Bozboz\Admin\Fields\SelectField;
 use Bozboz\Admin\Fields\BelongsToField;
 use Bozboz\Admin\Fields\BelongsToManyField;
-use Bozboz\Admin\Fields\URLField;
 use Bozboz\Admin\Fields\CheckboxField;
+use Bozboz\Admin\Fields\HTMLEditorField;
+use Bozboz\Admin\Fields\SelectField;
+use Bozboz\Admin\Fields\TextField;
+use Bozboz\Admin\Fields\URLField;
+use Bozboz\Admin\Reports\Filters\ArrayListingFilter;
+use Bozboz\Admin\Reports\Filters\SearchListingFilter;
+use Bozboz\Ecommerce\Fields\PriceField;
+use Bozboz\Ecommerce\Shipping\ShippingBandDecorator;
 use Bozboz\MediaLibrary\Fields\MediaBrowser;
 use Bozboz\MediaLibrary\Models\Media;
-use Bozboz\Ecommerce\Fields\PricesField;
-use Bozboz\Ecommerce\Fields\PriceField;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\HTML;
 
 class ProductDecorator extends ModelAdminDecorator
 {
-	private $categoryDecorator;
-	private $attributeOptionDecorator;
+	protected $categoryDecorator;
+	protected $attributeDecorator;
+	protected $shippingDecorator;
 
-	public function __construct(OrderableProduct $model, CategoryDecorator $categoryDecorator, AttributeOptionDecorator $attributeOptionDecorator)
+	public function __construct(
+		OrderableProduct $model,
+		CategoryDecorator $categoryDecorator,
+		AttributeOptionDecorator $attributeDecorator,
+		ShippingBandDecorator $shippingDecorator
+	)
 	{
 		$this->categoryDecorator = $categoryDecorator;
-		$this->attributeOptionDecorator = $attributeOptionDecorator;
+		$this->attributeDecorator = $attributeDecorator;
+		$this->shippingDecorator = $shippingDecorator;
 
 		parent::__construct($model);
 	}
@@ -155,9 +161,8 @@ class ProductDecorator extends ModelAdminDecorator
 			new PriceField('price', ['label' => 'Base Price']),
 			new CheckboxField('requires_email_signup_for_non_members'),
 			new CheckboxField('tax_exempt'),
-			new PricesField($instance->prices(), ['label' => 'Member Prices']),
 			new TextField('stock_level'),
-			new BelongsToField(new \Bozboz\StandardModelAdminDecorator, $instance->shippingBand()),
+			new BelongsToField($this->shippingDecorator, $instance->shippingBand()),
 			new TextField('weight'),
 			new TextField(['name' => 'sku', 'label' => 'SKU']),
 			new MediaBrowser($instance->media()),
@@ -195,7 +200,7 @@ class ProductDecorator extends ModelAdminDecorator
 
 	public function getSyncRelations()
 	{
-		return ['categories', 'relatedProducts', /*'attributeOptions',*/ 'media'];
+		return ['categories', 'relatedProducts', 'attributeOptions', 'media'];
 	}
 
 	/**
