@@ -32,8 +32,6 @@ class CreateOrderItemsTable extends Migration {
 			$table->string('image');
 			$table->timestamps();
 			$table->softDeletes();
-
-			$table->foreign('order_id')->references('id')->on('orders')->onDelete('restrict');
 		});
 	}
 

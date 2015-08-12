@@ -32,10 +32,6 @@ class CreateProductsTable extends Migration {
 			$table->integer('shipping_band_id')->unsigned()->nullable();
 			$table->timestamps();
 			$table->softDeletes();
-
-			$table->foreign('category_id')->references('id')->on('categories')->onDelete('restrict');
-			$table->foreign('variation_of_id')->references('id')->on('products')->onDelete('cascade');
-			$table->foreign('shipping_band_id')->references('id')->on('shipping_bands')->onDelete('restrict');
 		});
 	}
 

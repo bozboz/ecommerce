@@ -21,8 +21,6 @@ class CreateShippingMethodsTable extends Migration {
 			$table->boolean('is_default');
 			$table->integer('shipping_band_id')->unsigned();
 			$table->timestamps();
-
-			$table->foreign('shipping_band_id')->references('id')->on('shipping_bands')->onDelete('restrict');
 		});
 	}
 

@@ -23,8 +23,6 @@ class CreateShippingCostsTable extends Migration {
 			$table->integer('shipping_method_id')->unsigned();
 			$table->integer('price_pence');
 			$table->timestamps();
-
-			$table->foreign('shipping_method_id')->references('id')->on('shipping_methods')->onDelete('cascade');
 		});
 	}
 

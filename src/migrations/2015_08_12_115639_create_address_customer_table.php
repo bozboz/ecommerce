@@ -20,9 +20,6 @@ class CreateAddressCustomerTable extends Migration {
 			$table->integer('address_id')->unsigned()->index();
 			$table->integer('customer_id')->unsigned()->index();
 			$table->timestamps();
-
-			$table->foreign('address_id')->references('id')->on('addresses')->onDelete('cascade');
-			$table->foreign('customer_id')->references('id')->on('users')->onDelete('cascade');
 		});
 	}
 

@@ -33,12 +33,6 @@ class CreateOrdersTable extends Migration {
 			$table->integer('parent_order_id')->unsigned()->nullable();
 			$table->timestamps();
 			$table->softDeletes();
-
-			$table->foreign('state_id')->references('id')->on('order_states')->onDelete('restrict');
-			$table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
-			$table->foreign('shipping_address_id')->references('id')->on('addresses')->onDelete('restrict');
-			$table->foreign('billing_address_id')->references('id')->on('addresses')->onDelete('restrict');
-			$table->foreign('parent_order_id')->references('id')->on('orders')->onDelete('set null');
 		});
 	}
 

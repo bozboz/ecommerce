@@ -19,9 +19,6 @@ class CreateRelatedProductsTable extends Migration {
 			$table->integer('product_id')->unsigned()->index();
 			$table->integer('related_product_id')->unsigned()->index();
 			$table->timestamps();
-
-			$table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-			$table->foreign('related_product_id')->references('id')->on('products')->onDelete('cascade');
 		});
 	}
 
