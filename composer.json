@@ -18,7 +18,10 @@
     ],
     "autoload": {
         "psr-4": {
-            "Bozboz\\Ecommerce\\": "src"
-        }
+            "Bozboz\\Ecommerce\\": "src/Bozboz/Ecommerce"
+        },
+        "files": [
+            "helpers.php"
+        ]
     }
 }

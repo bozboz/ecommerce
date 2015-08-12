@@ -1,4 +1,4 @@
-<?php namespace Bozboz\Ecommerce\Providers;
+<?php namespace Bozboz\Ecommerce;
 
 use Bozboz\Ecommerce\Cart\Cart;
 use Bozboz\Ecommerce\Cart\CartObserver;
@@ -94,8 +94,8 @@ class EcommerceServiceProvider extends ServiceProvider
 
 	public function boot()
 	{
-		require __DIR__ . '/../helpers.php';
-		require __DIR__ . '/../Http/routes.php';
+		require __DIR__ . '/helpers.php';
+		require __DIR__ . '/Http/routes.php';
 
 		$this->package('bozboz/checkout');
 
@@ -109,7 +109,9 @@ class EcommerceServiceProvider extends ServiceProvider
 		$event->listen('admin.renderMenu', function($menu)
 		{
 			$url = $this->app['url'];
-			$menu['E-commerce'] = [
+			$lang = $this->app['translator'];
+
+			$menu[$lang->get('ecommerce::ecommerce.menu_name')] = [
 				'Products' => $url->route('admin.products.index'),
 				'Categories' => $url->route('admin.categories.index'),
 				'Orders' => $url->route('admin.orders.index'),
