@@ -11,7 +11,7 @@ class ShippingBand extends Base
 
 	public function getValidator()
 	{
-		return new StandardValidator;
+		return new ShippingBandValidator;
 	}
 
 	public function methods()

@@ -1,52 +1,29 @@
 @extends('admin::overview')
 
-@section('report')
-	<div class="table-responsive">
-	@if ($report->hasRows())
-		<ol class="secret-list faux-table{{ $sortableClass }}" data-model="{{ $identifier }}">
+@section('report_header')
+	@if ($canCreate)
+		<a class="btn btn-success pull-right space-left" href="{{ action($controller . '@create') }}">
+			<i class="fa fa-plus-square"></i>
+			New {{ $modelName }}
+		</a>
 
-			<li class="faux-table-row faux-table-heading">
-			@if ($sortableClass)
-				<div class="faux-cell cell-small"></div>
-			@endif
-			@foreach ($report->getHeadings() as $heading)
-				<div class="faux-cell">{{ $heading }}</div>
-			@endforeach
-				<div class="no-wrap faux-cell"></div>
-			</li>
-
-		@foreach ($report->getRows() as $row)
-			<li class="faux-table-row" data-id="{{ $row->getId() }}">
-			@if ($sortableClass)
-				<div class="faux-cell cell-small">
-					<i class="fa fa-sort sorting-handle"></i>
-				</div>
-			@endif
-			@foreach ($row->getColumns() as $name => $value)
-				<div class="faux-cell">{{ $value }}</div>
-			@endforeach
-				<div class="no-wrap faux-cell">
-					<a class="btn btn-success btn-sm" type="submit" href="{{ action('Admin\ShippingCostController@createForMethod', ['method' => $row->getId()]) }}">
-						<i class="fa fa-plus-square"></i>
-						Add Cost
-					</a>
-
-					<a href="{{ URL::action($controller . '@edit', [$row->getId()]) }}" class="btn btn-info btn-sm" type="submit">
-						<i class="fa fa-pencil"></i>
-						Edit
-					</a>
-
-					@if ($canDelete)
-						{{ Form::open(['class' => 'inline-form', 'action' => [ $controller . '@destroy', $row->getId() ], 'method' => 'DELETE']) }}
-							<button class="btn btn-danger btn-sm" data-warn="true" type="submit"><i class="fa fa-minus-square"></i> Delete</button>
-						{{ Form::close() }}
-					@endif
-				</div>
-			</li>
-		@endforeach
-		</ol>
-	@else
-		<p>Nothing here yet. Why not add something?</p>
+		<a class="btn btn-info pull-right" href="{{ action($controller . '@create') }}">
+			<i class="fa fa-plus-square"></i>
+			New Shipping Band
+		</a>
 	@endif
-	</div>
+
+	<h1>{{ $heading }}</h1>
+
+	@if (Session::has('model'))
+		@foreach(Session::get('model') as $msg)
+			<div id="js-alert" class="alert alert-success" data-alert="alert">
+				{{ $msg }}
+			</div>
+		@endforeach
+	@endif
+
+	@include('admin::partials.sort-alert')
+
+	{{ $report->getHeader() }}
 @stop

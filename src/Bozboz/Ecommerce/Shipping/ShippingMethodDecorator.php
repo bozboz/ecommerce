@@ -4,6 +4,7 @@ use Bozboz\Admin\Decorators\ModelAdminDecorator;
 use Bozboz\Admin\Fields\BelongsToField;
 use Bozboz\Admin\Fields\CheckboxField;
 use Bozboz\Admin\Fields\TextField;
+use Bozboz\Ecommerce\Shipping\ShippingBandDecorator;
 use Bozboz\StandardModelAdminDecorator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\HTML;
@@ -11,11 +12,14 @@ use Illuminate\Support\Str;
 
 class ShippingMethodDecorator extends ModelAdminDecorator
 {
-	private $shippingCost;
+	protected $shippingCost;
+	protected $shippingBand;
 
-	public function __construct(ShippingMethod $model, ShippingCostDecorator $cost)
+	public function __construct(ShippingMethod $model, ShippingCostDecorator $cost, ShippingBandDecorator $band)
 	{
 		$this->shippingCost = $cost;
+		$this->shippingBand = $band;
+
 		parent::__construct($model);
 	}
 
@@ -23,7 +27,7 @@ class ShippingMethodDecorator extends ModelAdminDecorator
 	{
 		return [
 			new TextField('name'),
-			new BelongsToField(new StandardModelAdminDecorator, $instance->band()),
+			new BelongsToField($this->shippingBand, $instance->band()),
 			new CheckboxField('is_default')
 		];
 	}
@@ -33,8 +37,21 @@ class ShippingMethodDecorator extends ModelAdminDecorator
 		return [
 			'Name' => $instance->name . ($instance->is_default ? ' <strong>(x)</strong>' : ''),
 			'Band' => $instance->band ? $instance->band->name : '-',
-			'Costs' => $this->getCosts($instance)
+			'Costs' => $this->getCosts($instance),
+			'' => $this->getNewCostButton($instance)
 		];
+	}
+
+	protected function getNewCostButton($instance)
+	{
+		$url = $this->shippingCost->getCreateForMethodUrl($instance);
+
+		return <<<HTML
+			<a class="btn btn-success btn-sm" type="submit" href="$url">
+				<i class="fa fa-plus-square"></i>
+				Add Cost
+			</a>
+HTML;
 	}
 
 	private function getCosts($instance)

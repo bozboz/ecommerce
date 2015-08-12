@@ -32,6 +32,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Bozboz\Ecommerce\Http\Control
 
 	/* Shipping */
 	Route::resource('shipping', 'ShippingMethodController', ['except' => 'show']);
+	Route::resource('shipping/bands', 'ShippingBandController', ['except' => 'show']);
 	Route::resource('shipping/costs', 'ShippingCostController', ['except' => 'show']);
 	Route::get('shipping/costs/create/{method}', 'ShippingCostController@createForMethod');
 

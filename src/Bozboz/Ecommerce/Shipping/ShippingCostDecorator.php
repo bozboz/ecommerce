@@ -5,6 +5,7 @@ use Bozboz\Ecommerce\Fields\PriceField;
 use Bozboz\Admin\Fields\SelectField;
 use Bozboz\Admin\Decorators\ModelAdminDecorator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 
 class ShippingCostDecorator extends ModelAdminDecorator
 {
@@ -60,5 +61,12 @@ class ShippingCostDecorator extends ModelAdminDecorator
 		}
 
 		return $this->model->newInstance($data);
+	}
+
+	public function getCreateForMethodUrl($instance)
+	{
+		return URL::action('Bozboz\Ecommerce\Http\Controllers\Admin\ShippingCostController@createForMethod', [
+			'method' => $instance->getKey()
+		]);
 	}
 }
