@@ -22,13 +22,14 @@ class CreateProductsTable extends Migration {
 			$table->string('description');
 			$table->integer('category_id')->unsigned()->nullable();
 			$table->integer('price_pence');
+			$table->decimal('tax_rate', 4, 2);
+			$table->boolean('tax_exempt');
 			$table->integer('variation_of_id')->unsigned()->nullable();
 			$table->integer('stock_level');
 			$table->integer('weight');
 			$table->integer('nominal_code');
 			$table->string('sku', 50);
 			$table->boolean('status');
-			$table->boolean('tax_exempt');
 			$table->integer('shipping_band_id')->unsigned()->nullable();
 			$table->timestamps();
 			$table->softDeletes();
