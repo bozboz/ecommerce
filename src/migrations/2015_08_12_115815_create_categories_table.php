@@ -20,7 +20,7 @@ class CreateCategoriesTable extends Migration {
 			$table->string('name');
 			$table->string('slug');
 			$table->text('description');
-			$table->integer('parent_id')->nullable();
+			$table->integer('parent_id')->unsigned()->nullable();
 			$table->timestamps();
 		});
 	}

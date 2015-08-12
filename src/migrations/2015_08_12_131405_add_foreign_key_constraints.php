@@ -108,56 +108,56 @@ class AddForeignKeyConstraints extends Migration {
 	{
 		Schema::table('orders', function(Blueprint $table)
 		{
-			$table->dropForeign('state_id');
-		//	$table->dropForeign('user_id');
-			$table->dropForeign('shipping_address_id');
-			$table->dropForeign('billing_address_id');
-			$table->dropForeign('parent_order_id');
+			$table->dropForeign('orders_state_id_foreign');
+		//	$table->dropForeign('orders_user_id_foreign');
+			$table->dropForeign('orders_shipping_address_id_foreign');
+			$table->dropForeign('orders_billing_address_id_foreign');
+			$table->dropForeign('orders_parent_order_id_foreign');
 		});
 
 		Schema::table('order_items', function(Blueprint $table)
 		{
-			$table->dropForeign('order_id');
+			$table->dropForeign('order_items_order_id_foreign');
 		});
 
 		Schema::table('address_customer', function(Blueprint $table)
 		{
-			$table->dropForeign('address_id');
-//			$table->dropForeign('customer_id');
+			$table->dropForeign('address_customer_address_id_foreign');
+//			$table->dropForeign('address_customer_customer_id_foreign');
 		});
 
 		Schema::table('products', function(Blueprint $table)
 		{
-			$table->dropForeign('category_id');
-			$table->dropForeign('variation_of_id');
-			$table->dropForeign('shipping_band_id');
+			$table->dropForeign('products_category_id_foreign');
+			$table->dropForeign('products_variation_of_id_foreign');
+			$table->dropForeign('products_shipping_band_id_foreign');
 		});
 
 		Schema::table('categories', function(Blueprint $table)
 		{
-			$table->dropForeign('parent_id');
+			$table->dropForeign('categories_parent_id_foreign');
 		});
 
 		Schema::table('category_product', function(Blueprint $table)
 		{
-			$table->dropForeign('category_id');
-			$table->dropForeign('product_id');
+			$table->dropForeign('category_product_category_id_foreign');
+			$table->dropForeign('category_product_product_id_foreign');
 		});
 
 		Schema::table('related_products', function(Blueprint $table)
 		{
-			$table->dropForeign('product_id');
-			$table->dropForeign('related_product_id');
+			$table->dropForeign('related_products_product_id_foreign');
+			$table->dropForeign('related_products_related_product_id_foreign');
 		});
 
 		Schema::table('shipping_methods', function(Blueprint $table)
 		{
-			$table->dropForeign('shipping_band_id');
+			$table->dropForeign('shipping_methods_shipping_band_id_foreign');
 		});
 
 		Schema::table('shipping_costs', function(Blueprint $table)
 		{
-			$table->dropForeign('shipping_method_id');
+			$table->dropForeign('shipping_costs_shipping_method_id_foreign');
 		});
 	}
 
