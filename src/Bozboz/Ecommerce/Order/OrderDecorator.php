@@ -1,12 +1,12 @@
 <?php namespace Bozboz\Ecommerce\Order;
 
-use Illuminate\Database\Eloquent\Builder;
-
 use Bozboz\Admin\Decorators\ModelAdminDecorator;
-use Bozboz\Admin\Fields\TextField;
 use Bozboz\Admin\Fields\SelectField;
+use Bozboz\Admin\Fields\TextField;
 use Bozboz\Admin\Reports\Filters\ArrayListingFilter;
 use Bozboz\Admin\Reports\Filters\SearchListingFilter;
+use Bozboz\Ecommerce\Listing\Filters\DateFilter;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrderDecorator extends ModelAdminDecorator
 {
@@ -43,32 +43,8 @@ class OrderDecorator extends ModelAdminDecorator
 	public function getListingFilters()
 	{
 		return [
-
-			new ArrayListingFilter('date', $this->getDateOptions(), function($builder, $value) {
-				switch ($value) {
-					case self::TODAY:
-						$builder->where('created_at', '>', new \DateTime('midnight'));
-						break;
-					case self::THIS_WEEK:
-						$builder->where('created_at', '>', new \DateTime('first day of this week'));
-						break;
-					case self::THIS_MONTH:
-						$builder->where('created_at', '>', new \DateTime('first day of this month'));
-						break;
-					case self::PAST_WEEK:
-						$builder->where('created_at', '>', new \DateTime('-1 week'));
-						break;
-					case self::PAST_MONTH:
-						$builder->where('created_at', '>', new \DateTime('-1 month'));
-						break;
-					case self::PAST_QUARTER:
-						$builder->where('created_at', '>', new \DateTime('-3 months'));
-						break;
-				}
-			}, self::PAST_WEEK),
-
+			new DateFilter,
 			new ArrayListingFilter('state', $this->getStateOptions(), 'state_id', 3),
-
 			new SearchListingFilter('customer', [], function($q, $value) {
 				foreach(explode(' ', $value) as $part) {
 					$q->where(function($q) use ($part) {
@@ -78,20 +54,6 @@ class OrderDecorator extends ModelAdminDecorator
 					});
 				}
 			})
-
-		];
-	}
-
-	protected function getDateOptions()
-	{
-		return [
-			null => 'All',
-			self::TODAY => 'Today',
-			self::THIS_WEEK => 'This week',
-			self::THIS_MONTH => 'This month',
-			self::PAST_WEEK => 'Past week',
-			self::PAST_MONTH => 'Past month',
-			self::PAST_QUARTER => 'Past quarter',
 		];
 	}
 
