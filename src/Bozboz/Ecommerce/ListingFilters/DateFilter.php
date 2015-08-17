@@ -1,6 +1,6 @@
 <?php
 
-namespace Bozboz\Ecommerce\Listing\Filters;
+namespace Bozboz\Ecommerce\ListingFilters;
 
 use Bozboz\Admin\Reports\Filters\ArrayListingFilter;
 

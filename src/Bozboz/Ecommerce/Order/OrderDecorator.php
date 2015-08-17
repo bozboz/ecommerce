@@ -5,7 +5,7 @@ use Bozboz\Admin\Fields\SelectField;
 use Bozboz\Admin\Fields\TextField;
 use Bozboz\Admin\Reports\Filters\ArrayListingFilter;
 use Bozboz\Admin\Reports\Filters\SearchListingFilter;
-use Bozboz\Ecommerce\Listing\Filters\DateFilter;
+use Bozboz\Ecommerce\ListingFilters\DateFilter;
 use Illuminate\Database\Eloquent\Builder;
 
 class OrderDecorator extends ModelAdminDecorator
