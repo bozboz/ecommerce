@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Admin routes
+ */
 Route::group(['prefix' => 'admin', 'namespace' => 'Bozboz\Ecommerce\Http\Controllers\Admin'], function()
 {
 	/* Orders */
@@ -36,4 +39,46 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Bozboz\Ecommerce\Http\Control
 	Route::resource('shipping/costs', 'ShippingCostController', ['except' => 'show']);
 	Route::get('shipping/costs/create/{method}', 'ShippingCostController@createForMethod');
 
+});
+
+/**
+ * Cart
+ */
+Route::group(['prefix' => 'cart', 'namespace' => 'Bozboz\Ecommerce\Http\Controllers'], function()
+{
+	Route::get('/', [
+		'as' => 'cart',
+		'uses' => 'CartController@index'
+	]);
+
+	Route::post('/', [
+		'uses' => 'CartController@update',
+		'as' => 'cart.update'
+	]);
+
+	Route::post('items', [
+		'as' => 'cart.add',
+		'uses' => 'CartController@add'
+	]);
+
+	Route::post('voucher', [
+		'as' => 'cart.add-voucher',
+		'uses' => 'CartController@addVoucher'
+	]);
+
+	Route::delete('/', [
+		'as' => 'cart.clear',
+		'uses' => 'CartController@destroy'
+	]);
+
+	Route::delete('items/{id}', [
+		'as' => 'cart.remove-item',
+		'uses' => 'CartController@remove'
+	]);
+
+	Route::get('items/remove/{id}/{sessionId}', [
+		'as' => 'cart.remove-item',
+		'uses' => 'CartController@remove',
+		'before' => 'sessionProtect'
+	]);
 });
