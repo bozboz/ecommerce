@@ -26,6 +26,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Bozboz\Ecommerce\Http\Control
 	/* Categories */
 	Route::resource('categories', 'CategoryController', ['except' => 'show']);
 
+	/* Brands */
+	Route::resource('brands', 'BrandController', ['except' => 'show']);
+
 	/* Customers */
 	Route::resource('customers', 'CustomerController', ['except' => 'show']);
 	Route::put('customers/{customer}/address/{address}', [
