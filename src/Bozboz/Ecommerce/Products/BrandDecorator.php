@@ -2,11 +2,12 @@
 
 namespace Bozboz\Ecommerce\Products;
 
-use Bozboz\Ecommerce\Products\Brand;
 use Bozboz\Admin\Decorators\ModelAdminDecorator;
 use Bozboz\Admin\Fields\TextField;
 use Bozboz\Admin\Fields\URLField;
+use Bozboz\Ecommerce\Products\Brand;
 use Bozboz\MediaLibrary\Fields\MediaBrowser;
+use Illuminate\Support\Facades\Config;
 
 class BrandDecorator extends ModelAdminDecorator
 {
@@ -29,9 +30,15 @@ class BrandDecorator extends ModelAdminDecorator
 
 	public function getFields($brand)
 	{
+		if (Config::get('ecommerce::urls.brands')) {
+			$urlField = new URLField('slug', Config::get('ecommerce::urls.brands'));
+		} else {
+			$urlField = null;
+		}
+
 		return [
 			new TextField('name'),
-			new URLField('slug', ['route' => 'brands.detail']),
+			$urlField,
 			new MediaBrowser($brand->logo())
 		];
 	}

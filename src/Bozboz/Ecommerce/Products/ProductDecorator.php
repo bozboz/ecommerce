@@ -17,6 +17,7 @@ use Bozboz\Ecommerce\Shipping\ShippingBandDecorator;
 use Bozboz\MediaLibrary\Fields\MediaBrowser;
 use Bozboz\MediaLibrary\Models\Media;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\HTML;
 
 class ProductDecorator extends ModelAdminDecorator
@@ -183,7 +184,7 @@ class ProductDecorator extends ModelAdminDecorator
 			];
 		} else {
 			$fields = [
-				new URLField('slug', ['route' => 'product-detail']),
+				new URLField('slug', Config::get('ecommerce::urls.products')),
 				new BelongsToManyField(
 					$this->categoryDecorator, $instance->categories(), ['label' => 'Categories']
 				),
