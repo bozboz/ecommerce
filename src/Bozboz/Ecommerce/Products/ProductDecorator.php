@@ -13,6 +13,7 @@ use Bozboz\Admin\Fields\URLField;
 use Bozboz\Admin\Reports\Filters\ArrayListingFilter;
 use Bozboz\Admin\Reports\Filters\SearchListingFilter;
 use Bozboz\Ecommerce\Fields\PriceField;
+use Bozboz\Ecommerce\Products\BrandDecorator;
 use Bozboz\Ecommerce\Shipping\ShippingBandDecorator;
 use Bozboz\MediaLibrary\Fields\MediaBrowser;
 use Bozboz\MediaLibrary\Models\Media;
@@ -29,11 +30,13 @@ class ProductDecorator extends ModelAdminDecorator
 	public function __construct(
 		OrderableProduct $model,
 		CategoryDecorator $categoryDecorator,
+		BrandDecorator $brandDecorator,
 		AttributeOptionDecorator $attributeDecorator,
 		ShippingBandDecorator $shippingDecorator
 	)
 	{
 		$this->categoryDecorator = $categoryDecorator;
+		$this->brandDecorator = $brandDecorator;
 		$this->attributeDecorator = $attributeDecorator;
 		$this->shippingDecorator = $shippingDecorator;
 
@@ -185,6 +188,7 @@ class ProductDecorator extends ModelAdminDecorator
 		} else {
 			$fields = [
 				new URLField('slug', Config::get('ecommerce::urls.products')),
+				new BelongsToField($this->brandDecorator, $instance->brand()),
 				new BelongsToManyField(
 					$this->categoryDecorator, $instance->categories(), ['label' => 'Categories']
 				),

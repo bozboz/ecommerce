@@ -22,6 +22,7 @@ class Product extends Base
 		'slug',
 		'description',
 		'category_id',
+		'brand_id',
 		'variation_of_id',
 		'stock_level',
 		'weight',
@@ -40,6 +41,7 @@ class Product extends Base
 	protected $nullable = [
 		'manufacturer_id',
 		'category_id',
+		'brand_id',
 		'variation_of_id',
 		'shipping_band_id',
 	];
@@ -98,6 +100,11 @@ class Product extends Base
 	public function manufacturer()
 	{
 		return $this->belongsTo('Bozboz\Ecommerce\Products\Manufacturer');
+	}
+
+	public function brand()
+	{
+		return $this->belongsTo('Bozboz\Ecommerce\Products\Brand');
 	}
 
 	public function category()
