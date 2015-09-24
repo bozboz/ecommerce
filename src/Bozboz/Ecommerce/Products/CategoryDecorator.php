@@ -2,6 +2,7 @@
 
 namespace Bozboz\Ecommerce\Products;
 
+use Config;
 use Illuminate\Support\Facades\HTML;
 use Bozboz\Admin\Decorators\ModelAdminDecorator;
 use Bozboz\Admin\Fields\TextField;
@@ -27,7 +28,7 @@ class CategoryDecorator extends ModelAdminDecorator
 	{
 		return array(
 			'Name' => $this->getLabel($category),
-			'Page' => HTML::linkRoute('product-detail', null, $category->slug),
+			'Page' => HTML::linkRoute(Config::get('ecommerce::urls.products'), null, $category->slug),
 			'Products' => $category->products()->count()
 		);
 	}
@@ -42,6 +43,7 @@ class CategoryDecorator extends ModelAdminDecorator
 		return array(
 			new TextField('name'),
 			new TextareaField('description'),
+			new URLField('slug', Config::get('ecommerce::urls.products')),
 			new TreeSelectField(
 				$this->model->all(),
 				['name' => 'parent_id', 'label' => 'Parent Category']
