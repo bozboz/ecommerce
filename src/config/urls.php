@@ -3,6 +3,6 @@
 return [
 
 	'brands' => 'brands.detail',
-	'products' => 'products-detail',
+	'products' => 'products.detail',
 
 ];
