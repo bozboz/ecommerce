@@ -8,7 +8,8 @@
         }
     ],
     "require": {
-        "bozboz/admin": "1.*"
+        "bozboz/admin": "1.*",
+        "baum/baum": "~1.0"
     },
     "repositories": [
         {
