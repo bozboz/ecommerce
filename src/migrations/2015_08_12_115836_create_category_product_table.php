@@ -16,10 +16,11 @@ class CreateCategoryProductTable extends Migration {
 		{
 			$table->engine = 'InnoDB';
 
-			$table->increments('id');
 			$table->integer('category_id')->unsigned()->index();
 			$table->integer('product_id')->unsigned()->index();
 			$table->timestamps();
+			
+			$table->primary(['category_id', 'product_id']);
 		});
 	}
 
