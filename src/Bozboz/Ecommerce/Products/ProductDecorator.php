@@ -187,7 +187,7 @@ class ProductDecorator extends ModelAdminDecorator
 			];
 		} else {
 			$fields = [
-				new URLField('slug', Config::get('ecommerce::urls.products')),
+				new URLField('slug', ['route' => Config::get('ecommerce::urls.products')]),
 				new BelongsToField($this->brandDecorator, $instance->brand()),
 				new BelongsToManyField(
 					$this->categoryDecorator, $instance->categories(), ['label' => 'Categories']

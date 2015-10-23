@@ -31,7 +31,7 @@ class BrandDecorator extends ModelAdminDecorator
 	public function getFields($brand)
 	{
 		if (Config::get('ecommerce::urls.brands')) {
-			$urlField = new URLField('slug', Config::get('ecommerce::urls.brands'));
+			$urlField = new URLField('slug', ['route' => Config::get('ecommerce::urls.brands')]);
 		} else {
 			$urlField = null;
 		}

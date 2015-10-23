@@ -43,7 +43,7 @@ class CategoryDecorator extends ModelAdminDecorator
 		return array(
 			new TextField('name'),
 			new TextareaField('description'),
-			new URLField('slug', Config::get('ecommerce::urls.products')),
+			new URLField('slug', ['route' => Config::get('ecommerce::urls.products')]),
 			new TreeSelectField(
 				$this->model->all(),
 				['name' => 'parent_id', 'label' => 'Parent Category']
