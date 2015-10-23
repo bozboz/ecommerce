@@ -17,6 +17,8 @@ class CreateCategoryBaumTable extends Migration {
 			$table->integer('lft')->nullable();
 			$table->integer('rgt')->nullable();
 			$table->integer('depth')->nullable();
+
+			$table->dropForeign('categories_parent_id_foreign');
 		});
 	}
 
@@ -32,6 +34,8 @@ class CreateCategoryBaumTable extends Migration {
 			$table->dropColumn('lft');
 			$table->dropColumn('rgt');
 			$table->dropColumn('depth');
+
+			$table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade');
 		});
 	}
 
