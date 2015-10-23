@@ -65,7 +65,7 @@ class ProductDecorator extends ModelAdminDecorator
 
 		foreach($variants as $variant) {
 			$links[] = '- ' . HTML::linkAction(
-				'Admin\ProductController@edit',
+				'Bozboz\Ecommerce\Http\Controllers\Admin\ProductController@edit',
 				implode(' ', $variant->attributeOptions->lists('value')) . ' (' . $variant->stock_level . ')',
 				[ $variant->id ]
 			);
