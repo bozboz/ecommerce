@@ -80,7 +80,7 @@ class ProductDecorator extends ModelAdminDecorator
 
 		foreach($categories as $category) {
 			$links[] = '- ' . HTML::linkAction(
-				'Admin\CategoryController@edit',
+				'Bozboz\Ecommerce\Http\Controllers\Admin\CategoryController@edit',
 				$category->name,
 				[ $category->id ]
 			);
