@@ -10,7 +10,7 @@ class Category extends \Baum\Node implements BaseInterface
 
 	use SanitisesInputTrait;
 
-	protected $nullable = [];
+	protected $nullable = ['parent_id'];
 
 	protected $table = 'categories';
 
@@ -28,17 +28,7 @@ class Category extends \Baum\Node implements BaseInterface
 
 	public function scopeTopLevel($query)
 	{
-		return $query->where('parent_id', 0);
-	}
-
-	public function children()
-	{
-		return $this->hasMany(get_class($this), 'parent_id');
-	}
-
-	public function parent()
-	{
-		return $this->belongsTo(get_class($this), 'parent_id');
+		return $query->whereNull('parent_id');
 	}
 
 	public function sanitiseInput($input) {
