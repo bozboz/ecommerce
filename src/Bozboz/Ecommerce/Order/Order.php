@@ -147,8 +147,8 @@ class Order extends Base
 		$item->tax_rate = $this->isTaxable() && $orderable->isTaxable() ? 0.2 : 0;
 		$item->calculateNet($orderable, $this);
 		$item->calculateGross();
-		$orderable->items()->save($item);
 		$this->items()->save($item);
+		$orderable->items()->save($item);
 
 		return $item;
 	}
