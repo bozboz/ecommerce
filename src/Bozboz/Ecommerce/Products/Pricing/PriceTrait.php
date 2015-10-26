@@ -33,4 +33,24 @@ trait PriceTrait
 	{
 		$this->attributes[$this->getRawPriceField()] = $price * 100;
 	}
+
+	/**
+	 * Mutator method for setting tax rate based on price_includes_tax attribute
+	 *
+	 * @param  boolean  $value
+	 */
+	public function setPriceIncludesTaxAttribute($value)
+	{
+		$this->tax_rate = $value ? 0.2 : 0;
+	}
+
+	/**
+	 * Access method to determine if price includes tax
+	 *
+	 * @return boolean
+	 */
+	public function getPriceIncludesTaxAttribute()
+	{
+		return $this->tax_rate > 0;
+	}
 }

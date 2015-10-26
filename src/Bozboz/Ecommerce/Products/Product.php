@@ -147,26 +147,6 @@ class Product extends Base
 		return $list;
 	}
 
-	/**
-	 * Mutator method for setting tax rate based on price_includes_tax attribute
-	 *
-	 * @param  boolean  $value
-	 */
-	public function setPriceIncludesTaxAttribute($value)
-	{
-		$this->tax_rate = $value ? 0.2 : 0;
-	}
-
-	/**
-	 * Access method to determine if price includes tax
-	 *
-	 * @return boolean
-	 */
-	public function getPriceIncludesTaxAttribute()
-	{
-		return $this->tax_rate > 0;
-	}
-
 	/*
 	 * @param  Bozboz\Users\User|null  $user
 	 * @return boolean
