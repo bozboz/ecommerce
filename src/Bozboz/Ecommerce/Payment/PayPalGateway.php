@@ -17,10 +17,18 @@ class PayPalGateway implements PaymentGateway
 
 	public function purchase($data, Order $order)
 	{
+		$order->generateTransactionId();
+		$order->save();
+
 		$request = $this->gateway->purchase($this->orderDetails($order));
 		$request->setItems($this->orderToArray($order));
 
-		return $request->send();
+		$response = $request->send();
+
+		$order->payment_ref = $response->getTransactionReference();
+		$order->save();
+
+		return $response;;
 	}
 
 	public function completePurchase(Order $order)
@@ -35,10 +43,10 @@ class PayPalGateway implements PaymentGateway
 	{
 		return [
 			'amount' => number_format($order->totalprice() / 100, 2),
-			'returnurl' => $this->url->route('checkout.callback.completed'),
-			'cancelurl' => $this->url->route('checkout.callback.cancel'),
+			'returnUrl' => $this->url->route('checkout.callback.completed'),
+			'cancelUrl' => $this->url->route('checkout.callback.cancel'),
 			'currency' => 'gbp',
-			'transactionid' => $order->getKey(),
+			'transactionId' => $order->getTransactionId(),
 		];
 	}
 
@@ -49,7 +57,7 @@ class PayPalGateway implements PaymentGateway
 			$orderItems[] = [
 				'name' => $orderItem->name,
 				'quantity' => $orderItem->quantity,
-				'price' => number_format($orderItem->price / 100, 2)
+				'price' => number_format($orderItem->price_pence / 100, 2)
 			];
 		}
 

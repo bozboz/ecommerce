@@ -285,13 +285,36 @@ class Order extends Base
 		$this->payment_data = json_encode($this->paymentDataArray);
 	}
 
+	/**
+	 * Parse the transaction ID to determine ID of order
+	 *
+	 * @param  string  $id
+	 * @return Bozboz\Ecommerce\Order\Order
+	 */
 	public function findByTransactionId($id)
 	{
-		return static::find(substr($id, 1));
+		return static::where('transaction_id', $id)->first();
 	}
 
+	/**
+	 * Populate a new transaction ID on the order, in format:
+	 *
+	 *     c<id>-<timestamp>
+	 *
+	 * @return void
+	 */
+	public function generateTransactionId()
+	{
+		$this->transaction_id = 'i' . $this->id . '-' . time();
+	}
+
+	/**
+	 * Retrieve transaction ID for order
+	 *
+	 * @return string
+	 */
 	public function getTransactionId()
 	{
-		return 'c' . $this->id;
+		return $this->transaction_id;
 	}
 }
