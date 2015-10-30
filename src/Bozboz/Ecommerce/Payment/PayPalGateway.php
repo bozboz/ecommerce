@@ -4,7 +4,7 @@ use Omnipay\PayPal\ExpressGateway;
 use Bozboz\Ecommerce\Order\Order;
 use Illuminate\Routing\UrlGenerator;
 
-class PayPalGateway implements PaymentGateway
+class PayPalGateway extends ExternalGateway
 {
 	private $gateway;
 	private $url;
@@ -62,5 +62,10 @@ class PayPalGateway implements PaymentGateway
 		}
 
 		return $orderItems;
+	}
+
+	public function getIdentifier()
+	{
+		// do nothing...
 	}
 }
