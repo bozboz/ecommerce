@@ -180,7 +180,7 @@ class ProductDecorator extends ModelAdminDecorator
 		if ($instance->variation_of_id) {
 			$fields = [
 				new BelongsToManyField(
-					$this->attributeOptionDecorator, $instance->attributeOptions(), [ 'label' => 'Attributes' ], function($query) {
+					$this->attributeDecorator, $instance->attributeOptions(), [ 'label' => 'Attributes' ], function($query) {
 						$query->with('attribute')->orderBy('product_attribute_id')->orderBy('value');
 					}
 				)
