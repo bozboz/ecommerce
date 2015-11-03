@@ -59,7 +59,7 @@ class ProductDecorator extends ModelAdminDecorator
 		);
 	}
 
-	private function linkToVariants($variants)
+	protected function linkToVariants($variants)
 	{
 		$links = [];
 
@@ -74,7 +74,7 @@ class ProductDecorator extends ModelAdminDecorator
 		return implode('<br>', $links);
 	}
 
-	private function linkToCategory($categories)
+	protected function linkToCategory($categories)
 	{
 		$links = [];
 
