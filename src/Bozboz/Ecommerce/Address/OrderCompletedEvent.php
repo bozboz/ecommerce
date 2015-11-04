@@ -1,5 +1,6 @@
 <?php namespace Bozboz\Ecommerce\Address;
 
+use Bozboz\Ecommerce\Customer\Customer;
 use Bozboz\Ecommerce\Order\Order;
 
 class OrderCompletedEvent
@@ -17,7 +18,9 @@ class OrderCompletedEvent
 
 		if ( ! $user) return false;
 
-		$this->addAddressToCustomer($user, $order->billingAddress);
+		if ($this->billingAddress) {
+			$this->addAddressToCustomer($user, $order->billingAddress);
+		}
 
 		if ($order->shippingAddress && ! $order->areAddressesSame()) {
 			$this->addAddressToCustomer($user, $order->shippingAddress);
