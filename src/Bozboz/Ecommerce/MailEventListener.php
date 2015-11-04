@@ -23,6 +23,7 @@ class MailEventListener
 		$data = $order->toArray();
 		$data['lineItems'] = $order->items;
 		$data['orderTotal'] = $order->totalPrice();
+		$data['orderTax'] = $order->totalTax();
 
 		$this->mailer->send('emails.orders.confirmation', $data, function($message) use ($order)
 		{
