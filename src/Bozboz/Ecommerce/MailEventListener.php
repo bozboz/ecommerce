@@ -2,7 +2,6 @@
 
 use Illuminate\Mail\Mailer;
 use Illuminate\Config\Repository as Config;
-use Bozboz\Library\Downloads\Download;
 
 class MailEventListener
 {
@@ -23,7 +22,6 @@ class MailEventListener
 	{
 		$data = $order->toArray();
 		$data['lineItems'] = $order->items;
-		$data['downloads'] = Download::where('order_id', $data['id'])->lists('hash', 'media_id');
 		$data['orderTotal'] = $order->totalPrice();
 
 		$this->mailer->send('emails.orders.confirmation', $data, function($message) use ($order)
