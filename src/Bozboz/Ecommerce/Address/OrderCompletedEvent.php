@@ -18,7 +18,7 @@ class OrderCompletedEvent
 
 		if ( ! $user) return false;
 
-		if ($this->billingAddress) {
+		if ($order->billingAddress) {
 			$this->addAddressToCustomer($user, $order->billingAddress);
 		}
 
