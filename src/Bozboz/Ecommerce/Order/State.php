@@ -14,6 +14,6 @@ class State extends Model
 
 	public function getEventFriendlyName()
 	{
-		return 'order' . strtolower(str_replace(' ', '.', $this->name));
+		return 'order.' . strtolower(str_replace(' ', '.', $this->name));
 	}
 }
