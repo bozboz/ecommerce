@@ -53,7 +53,7 @@ class OrderableProduct extends Product implements Orderable
 
 	public function calculatePrice($quantity, Order $order)
 	{
-		return $quantity * $this->getPriceForUser(Auth::user()) / (1 + $this->tax_rate);
+		return $quantity * $this->price * 100 / (1 + $this->tax_rate);
 	}
 
 	public function calculateWeight($quantity)
