@@ -22,7 +22,7 @@
 				</div><!--
 				--><div class="grid__item col-sm-10 medium-4 large-8">
 						<h4 class="cart-product__title">{{ $item->name }}</h4>
-						<a href="{{ URL::route('cart-remove', [$item->id, Session::token()]) }}" class="btn--remove"><i class="fa fa-remove"></i> Remove</a>
+						<a href="{{ URL::route('cart.remove-item', [$item->id, Session::token()]) }}" class="btn--remove"><i class="fa fa-remove"></i> Remove</a>
 				</div><!--
 				--><div class="grid__item cart-product__price col-sm-2 medium-2 large-1">{{ format_money($item->price_pence_ex_vat) }}</div><!--
 				--><div class="grid__item cart-product__quantity col-sm-4 medium-2 large-1">
