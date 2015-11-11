@@ -10,7 +10,7 @@ use Illuminate\Validation\Factory as Validator;
 class CustomerService
 {
 	protected $validator;
-	protected $user;
+	protected $customer;
 
 	/**
 	 * @param Illuminate\Validation\Factory $validator
