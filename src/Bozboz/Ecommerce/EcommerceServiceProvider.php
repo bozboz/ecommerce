@@ -44,7 +44,6 @@ class EcommerceServiceProvider extends ServiceProvider
 		{
 			$gateway = Omnipay::create('SagePay_Direct');
 
-			$gateway->setSimulatorMode($app['config']->get('payment.sagepay.simulatorMode'));
 			$gateway->setTestMode($app['config']->get('payment.sagepay.testMode'));
 			$gateway->setVendor($app['config']->get('payment.sagepay.vendor'));
 
@@ -58,12 +57,10 @@ class EcommerceServiceProvider extends ServiceProvider
 				Omnipay::create('SagePay_Direct')
 			];
 
-			$simulatorMode = $app['config']->get('payment.sagepay.simulatorMode');
 			$testMode = $app['config']->get('payment.sagepay.testMode');
 			$vendor = $app['config']->get('payment.sagepay.vendor');
 
 			foreach($gateways as $gateway) {
-				$gateway->setSimulatorMode($simulatorMode);
 				$gateway->setTestMode($testMode);
 				$gateway->setVendor($vendor);
 			}
