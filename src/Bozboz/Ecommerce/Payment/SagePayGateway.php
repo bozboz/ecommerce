@@ -51,7 +51,7 @@ class SagePayGateway extends CreditCardGateway implements Refundable
 			'transactionId' => $order->id
 		];
 
-		$response = $this->gateway->purchase($paymentData)->send()
+		$response = $this->gateway->purchase($paymentData)->send();
 
 		$order->payment_ref = $response->getTransactionReference();
 		$order->save();
