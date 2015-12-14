@@ -19,8 +19,12 @@ class ShippingMethodController extends ModelAdminController
 
 		$report->overrideView('ecommerce::shipping.admin.overview');
 
+		$class = get_class($this);
+
 		return $report->render([
-			'controller' => get_class($this)
+			'createAction' => "{$class}@create",
+			'createBandAction' => 'Bozboz\Ecommerce\Http\Controllers\Admin\ShippingBandController@create',
+			'controller' => $class,
 		]);
 	}
 }

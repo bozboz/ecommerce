@@ -2,12 +2,12 @@
 
 @section('report_header')
 	@if ($canCreate)
-		<a class="btn btn-success pull-right space-left" href="{{ action($controller . '@create') }}">
+		<a class="btn btn-success pull-right space-left" href="{{ action($createAction) }}">
 			<i class="fa fa-plus-square"></i>
 			New {{ $modelName }}
 		</a>
 
-		<a class="btn btn-info pull-right" href="{{ action($controller . '@create') }}">
+		<a class="btn btn-info pull-right" href="{{ action($createBandAction) }}">
 			<i class="fa fa-plus-square"></i>
 			New Shipping Band
 		</a>
