@@ -36,8 +36,8 @@ class OrderCompletedEvent
 	 */
 	protected function addAddressToCustomer(Customer $customer, Address $address)
 	{
-		if ( ! $user->addresses->contains($address)) {
-			$user->addresses()->attach($address);
+		if ( ! $customer->addresses->contains($address)) {
+			$customer->addresses()->attach($address);
 		}
 	}
 }
