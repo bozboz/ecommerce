@@ -56,6 +56,10 @@ class OrderController extends ModelAdminController
 			foreach($report->getRows() as $row) {
 				$data[] = $row->getColumns();
 			}
+
+			array_walk_recursive($data, function(&$item) {
+				$item = strip_tags($item);
+			});
 		}
 
 		$csv = public_path('csv/file.csv');
