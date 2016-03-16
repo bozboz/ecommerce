@@ -7,8 +7,9 @@ use Bozboz\Admin\Reports\Filters\ArrayListingFilter;
 use Bozboz\Admin\Reports\Filters\SearchListingFilter;
 use Bozboz\Ecommerce\ListingFilters\DateFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Bozboz\Admin\Reports\Downloadable;
 
-class OrderDecorator extends ModelAdminDecorator
+class OrderDecorator extends ModelAdminDecorator implements Downloadable
 {
 	const TODAY = 1;
 	const THIS_WEEK = 2;
@@ -31,6 +32,17 @@ class OrderDecorator extends ModelAdminDecorator
 			'Date' => $order->created_at,
 			'Total' => format_money($order->totalPrice())
 		);
+	}
+
+	public function getColumnsForCSV($order)
+	{
+		return [
+			'ID' => $order->id,
+			'Customer' => $order->customer_first_name . ' ' . $order->customer_last_name,
+			'Country' => $order->billingAddress ? $order->billingAddress->country : '-',
+			'Date' => $order->created_at,
+			'Total' => format_money($order->totalPrice())
+		];
 	}
 
 	public function modifyListingQuery(Builder $query)

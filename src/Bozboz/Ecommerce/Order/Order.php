@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Config;
 use Bozboz\Admin\Models\Base;
 use Bozboz\Ecommerce\Order\State as OrderState;
 use Bozboz\Ecommerce\Address\Address;
+use Bozboz\Admin\Reports\Downloadable;
 
 class Order extends Base
 {

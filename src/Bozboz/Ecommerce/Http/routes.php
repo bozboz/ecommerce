@@ -16,7 +16,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Bozboz\Ecommerce\Http\Control
 		'as' => 'admin.orders.refund',
 		'before' => 'csrf'
 	]);
-	Route::post('orders/csv', [
+	Route::get('orders/csv', [
 		'uses' => 'OrderController@downloadCsv'
 	]);
 

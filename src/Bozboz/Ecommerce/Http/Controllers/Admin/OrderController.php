@@ -4,6 +4,7 @@ namespace Bozboz\Ecommerce\Http\Controllers\Admin;
 
 use View, Redirect, Input, Response;
 use Bozboz\Admin\Controllers\ModelAdminController;
+use Bozboz\Admin\Reports\CSVReport;
 use Bozboz\Admin\Reports\Report;
 use Bozboz\Ecommerce\Order\OrderDecorator;
 use Bozboz\Ecommerce\Order\Refund;
@@ -47,29 +48,7 @@ class OrderController extends ModelAdminController
 
 	public function downloadCsv()
 	{
-		$data = [];
-
-		$report = new Report($this->decorator);
-
-		if ($report->hasRows()) {
-			$data[] = $report->getHeadings();
-			foreach($report->getRows() as $row) {
-				$data[] = $row->getColumns();
-			}
-
-			array_walk_recursive($data, function(&$item) {
-				$item = strip_tags($item);
-			});
-		}
-
-		$csv = public_path('csv/file.csv');
-
-		$fp = fopen($csv, 'w');
-
-		foreach ($data as $fields) {
-			fputcsv($fp, $fields);
-		}
-
-		return Response::download($csv, sprintf('sales-report_%s.csv', date('Y-m-d_H:i')));
+		$report = new CSVReport($this->decorator);
+		return $report->render();
 	}
 }
