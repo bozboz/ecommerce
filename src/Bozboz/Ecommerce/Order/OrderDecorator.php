@@ -37,11 +37,11 @@ class OrderDecorator extends ModelAdminDecorator implements Downloadable
 	public function getColumnsForCSV($order)
 	{
 		return [
-			'ID' => $order->id,
-			'Customer' => $order->customer_first_name . ' ' . $order->customer_last_name,
-			'Country' => $order->billingAddress ? $order->billingAddress->country : '-',
-			'Date' => $order->created_at,
-			'Total' => format_money($order->totalPrice())
+			'id' => $order->id,
+			'customer' => $order->customer_first_name . ' ' . $order->customer_last_name,
+			'country' => $order->billingAddress ? $order->billingAddress->country : '-',
+			'date' => $order->created_at,
+			'total' => format_money($order->totalPrice())
 		];
 	}
 
