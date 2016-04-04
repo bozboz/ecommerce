@@ -116,15 +116,18 @@ class AddressBook
 	protected function storeAddress(BelongsTo $relation, $dataOrAddress)
 	{
 		if ($dataOrAddress instanceof Address) {
-			$relation->associate($dataOrAddress);
+			$address = $dataOrAddress;
+			$relation->associate($address);
 		} elseif (array_key_exists('id', $dataOrAddress)) {
 			$relation->update($dataOrAddress);
+			$address = $relation->first();
 		} else {
-			$relation->associate($this->address->create($dataOrAddress))->save();
+			$address = $this->address->create($dataOrAddress);
+			$relation->associate($address)->save();
 		}
 
 		if ($dataOrAddress instanceof Address) return $dataOrAddress;
 
-		return $relation->first();
+		return $address;
 	}
 }
