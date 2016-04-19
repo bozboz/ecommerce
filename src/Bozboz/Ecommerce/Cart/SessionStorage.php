@@ -11,15 +11,20 @@ class SessionStorage implements CartStorageInterface
 		$this->session = $session;
 	}
 
-	public function getCart($required = false)
+	public function getCart()
 	{
-		$cart = Cart::whereId($this->session->get('cart'))->whereHas('state', function($q)
+		return Cart::whereId($this->getIdentifier())->whereHas('state', function($q)
 		{
 			$q->where('name', 'LIKE', 'Cart%');
 
 		})->first();
+	}
 
-		if ($required && ! $cart) throw new CartMissingException;
+	public function getCartOrFail()
+	{
+		$cart = $this->getCart();
+
+		if ( ! $cart) throw new CartMissingException;
 
 		return $cart;
 	}
@@ -40,8 +45,8 @@ class SessionStorage implements CartStorageInterface
 		return $cart;
 	}
 
-	public function getCartOrFail()
+	public function getIdentifier()
 	{
-		return $this->getCart(true);
+		return $this->session->get('cart');
 	}
 }

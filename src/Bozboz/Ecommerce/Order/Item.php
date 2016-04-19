@@ -73,4 +73,19 @@ class Item extends Model
 
 		return $refundedItem;
 	}
+
+	/**
+	 * Update item's quantity, validate, and recalculate price and weight
+	 *
+	 * @param  int  $quantityDifference
+	 * @return void
+	 */
+	public function updateQuantity($newQuantity)
+	{
+		$this->quantity = $newQuantity;
+		$this->orderable->validate($newQuantity, $this, $this->order);
+		$this->total_weight = $this->orderable->calculateWeight($newQuantity);
+		$this->calculateNet($this->orderable, $this->order);
+		$this->calculateGross();
+	}
 }

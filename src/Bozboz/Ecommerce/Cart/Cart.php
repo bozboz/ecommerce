@@ -1,6 +1,5 @@
 <?php namespace Bozboz\Ecommerce\Cart;
 
-use Bozboz\Ecommerce\Voucher\OrderableVoucher;
 use Bozboz\Ecommerce\Order\Order;
 use Bozboz\Ecommerce\Order\Item;
 use Bozboz\Ecommerce\Order\Orderable;
@@ -18,17 +17,20 @@ class Cart extends Order
 	 */
 	public function add(Orderable $orderable, $quantity = 1)
 	{
+		$event = static::$dispatcher;
+
 		if ($item = $this->contains($orderable)) {
 			if ($orderable->canAdjustQuantity()) {
-				$this->updateItem($item, $item->quantity + $quantity);
+				$item->updateQuantity($item->quantity + $quantity);
+				$event->fire('cart.item.updated', [$item, $this]);
 			} else {
 				$this->remove($item);
 				$item = $this->addItem($orderable, $quantity);
+				$event->fire('cart.item.added', [$item, $this]);
 			}
-			static::$dispatcher->fire('cart.item.updated', $item);
 		} else {
 			$item = $this->addItem($orderable, $quantity);
-			static::$dispatcher->fire('cart.item.added', $item);
+			$event->fire('cart.item.added', $item);
 		}
 
 		$item->save();
@@ -37,50 +39,27 @@ class Cart extends Order
 	}
 
 	/**
-	 * Add voucher with $voucherCode to cart
-	 *
-	 * @param  string  $voucherCode
-	 * @return void
-	 */
-	public function addVoucher($voucherCode)
-	{
-		$voucher = OrderableVoucher::whereCode($voucherCode)->firstOrFail();
-
-		if ( ! $this->contains($voucher)) {
-			$this->order->addItem($voucher);
-		}
-	}
-
-	/**
-	 * Remove/adjust quantity of $item from the cart
+	 * Remove $item from the cart
 	 *
 	 * @param  Bozboz\Ecommerce\Order\Item  $item
-	 * @param  int  $quantity
 	 * @return void
 	 */
-	public function remove(Item $item, $quantity = 0)
+	public function remove(Item $item)
 	{
-		if ($quantity <= 0) {
-			$item->delete();
-			static::$dispatcher->fire('cart.item.removed', $item);
-		} else {
-			$this->updateItem($item, $item->quantity - $quantity);
-			static::$dispatcher->fire('cart.item.updated', $item);
-			$item->save();
-		}
+		$item->delete();
+		static::$dispatcher->fire('cart.item.removed', $item);
 	}
 
 	/**
-	 * Remove/adjust quantity of item from the cart with given $id and $quantity
+	 * Remove item from the cart with given $id
 	 *
 	 * @param  int  $id
-	 * @param  int  $quantity
-	 * @return void
 	 * @throws Illuminate\Database\Eloquent\ModelNotFoundException
+	 * @return void
 	 */
-	public function removeById($id, $quantity = 0)
+	public function removeById($id)
 	{
-		$this->remove($this->items()->find($id), $quantity);
+		$this->remove($this->items()->findOrFail($id));
 	}
 
 	/**
@@ -92,13 +71,13 @@ class Cart extends Order
 	public function updateQuantities(array $quantities)
 	{
 		foreach($this->items as $item) {
-			$quantity = $quantities[$item->id];
-			if (isset($quantity)) {
-				static::$dispatcher->fire('cart.item.updated', $item);
+			if (array_key_exists($item->id, $quantities)) {
+				$quantity = $quantities[$item->id];
 				if ($quantity === '0') {
-					$this->removeById($item->id);
+					$this->remove($item);
 				} else {
-					$this->updateItem($item, $quantity);
+					$item->updateQuantity($quantity);
+					static::$dispatcher->fire('cart.item.updated', [$item, $this]);
 					$item->save();
 				}
 			}
@@ -115,10 +94,5 @@ class Cart extends Order
 		$this->items()->delete();
 
 		static::$dispatcher->fire('cart.items.cleared', $this);
-	}
-
-	public function getId()
-	{
-		return $this->order->getKey();
 	}
 }

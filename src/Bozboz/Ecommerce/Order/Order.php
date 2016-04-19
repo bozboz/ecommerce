@@ -155,26 +155,6 @@ class Order extends Base
 	}
 
 	/**
-	 * @param  Bozboz\Ecommerce\Order\Item  $item
-	 * @param  int  $newQuantity
-	 * @return Bozboz\Ecommerce\Order\Item
-	 */
-	public function updateItem(Item $item, $newQuantity)
-	{
-		$orderable = $item->orderable;
-
-		$orderable->validate($newQuantity, $item, $this);
-
-		$item->quantity = $newQuantity;
-		$item->total_weight = $orderable->calculateWeight($newQuantity);
-		$item->calculateNet($orderable, $this);
-		$item->calculateGross();
-		$item->save();
-
-		return $item;
-	}
-
-	/**
 	 * Change state of order to a state matching the given $state string
 	 *
 	 * @param  string  $state

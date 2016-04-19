@@ -5,11 +5,17 @@ interface CartStorageInterface
 	/**
 	 * Retrieve Cart instance
 	 *
-	 * @param  boolean  $required
-	 * @throws CartMissingException
 	 * @return Bozboz\Ecommerce\Cart\Cart
 	 */
-	public function getCart($required = false);
+	public function getCart();
+
+	/**
+	 * Retrieve cart and fail if one doesn't exist
+	 *
+	 * @throws Bozboz\Ecommerce\Cart\CartMissingException
+	 * @return Bozboz\Ecommerce\Cart\Cart
+	 */
+	public function getCartOrFail();
 
 	/**
 	 * Retrieve, or create a Cart instance
@@ -17,4 +23,11 @@ interface CartStorageInterface
 	 * @return Bozboz\Ecommerce\Cart\Cart
 	 */
 	public function getOrCreateCart();
+
+	/**
+	 * Retrieve cart identifier
+	 *
+	 * @return mixed
+	 */
+	public function getIdentifier();
 }
