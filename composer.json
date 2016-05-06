@@ -5,11 +5,14 @@
         {
             "name": "Sam King",
             "email": "sdking02@gmail.com"
+        },
+        {
+            "name": "Jim Hollington",
+            "email": "jim@oddvalue.co.uk"
         }
     ],
     "require": {
-        "bozboz/admin": "1.*",
-        "baum/baum": "~1.0"
+        "bozboz/admin": "2.*"
     },
     "repositories": [
         {
@@ -19,7 +22,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Bozboz\\Ecommerce\\": "src/Bozboz/Ecommerce"
+            "Bozboz\\Ecommerce\\": "src"
         },
         "files": [
             "src/helpers.php"
