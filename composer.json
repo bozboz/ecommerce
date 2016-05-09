@@ -12,7 +12,12 @@
         }
     ],
     "require": {
-        "bozboz/admin": "2.*"
+        "bozboz/admin": "2.*",
+        "bozboz/products": "dev-master",
+        "bozboz/orders": "dev-master",
+        "bozboz/checkout": "dev-master",
+        "bozboz/payment": "dev-master",
+        "bozboz/shipping": "dev-master"
     },
     "repositories": [
         {
