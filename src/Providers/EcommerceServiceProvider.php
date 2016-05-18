@@ -19,12 +19,26 @@ class EcommerceServiceProvider extends ServiceProvider
         $this->app->register('Bozboz\Ecommerce\Orders\Providers\OrderServiceProvider');
         $this->app->register('Bozboz\Ecommerce\Checkout\Providers\CheckoutServiceProvider');
         // $this->app->register(PaymentServiceProvider::class);
+
+        $this->app->bind(
+            \Bozboz\Ecommerce\Products\ProductInterface::class,
+            \Bozboz\Ecommerce\Products\OrderableProduct::class
+        );
+
+        $this->app->bind(
+            \Bozboz\Ecommerce\Orders\Cart\CartStorageInterface::class,
+            \Bozboz\Ecommerce\Orders\Cart\SessionStorage::class
+        );
+
+        $this->app->bind('cart', Bozboz\Ecommerce\Orders\Cart\Cart::class);
     }
 
 
     public function boot()
     {
         $packageRoot = __DIR__ . "/../..";
+
+        require "{$packageRoot}/helpers.php";
 
         if (! $this->app->routesAreCached()) {
             require "{$packageRoot}/src/Http/routes.php";
