@@ -2,28 +2,36 @@
 
 namespace Bozboz\Ecommerce\Http\Controllers;
 
-use Bozboz\Ecommerce\Products\Category;
+use App\Http\Controllers\Controller;
+use Bozboz\Admin\Media\Media;
+use Bozboz\Ecommerce\Products\Categories\Category;
+use Bozboz\Ecommerce\Products\ProductInterface;
 use Bozboz\Ecommerce\Products\Feature;
-use Bozboz\Ecommerce\Products\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 
 class ShopController extends Controller
 {
+	private $product;
+	private $category;
+
+	public function __construct(ProductInterface $product, Category $category)
+	{
+		$this->product = $product;
+		$this->category = $category;
+	}
+
 	public function index()
 	{
-		$page = Page::whereSlug('store')->first();
-
-		return $this->productListing(Feature::first()->products()->visible()->getQuery())->with([
-			'heading' => $page->title,
-			'title' => $page->meta_title
-		]);
+		return $this->productListing($this->product->visible()/*Feature::first()->products()->visible()->getQuery()*/);
 	}
 
 	public function search()
 	{
 		$query = Input::get('q');
-		$results = Product::visible()->search($query);
+		$results = $this->product->visible()->search($query);
 
 		return $this->productListing($results)->with([
 			'heading' => sprintf('Search results for "%s"', $query),
@@ -33,7 +41,7 @@ class ShopController extends Controller
 
 	public function filter($filter)
 	{
-		$products = Product::visible()->whereHas('manufacturer', function($q) use ($filter) {
+		$products = $this->product->visible()->whereHas('manufacturer', function($q) use ($filter) {
 			$q->where('slug', $filter);
 		});
 
@@ -46,7 +54,7 @@ class ShopController extends Controller
 
 	public function productWithCategory($categorySlug, $productSlug)
 	{
-		$product = Product::where('slug', $productSlug)->firstOrFail();
+		$product = $this->product->where('slug', $productSlug)->firstOrFail();
 		$category = $product->categories()->whereSlug($categorySlug)->firstOrFail();
 
 		$product->category = $category;
@@ -55,13 +63,13 @@ class ShopController extends Controller
 
 	public function productOrCategory($slug)
 	{
-		if ($product = Product::where('slug', $slug)->first()) {
+		if ($product = $this->product->where('slug', $slug)->first()) {
 			return $this->productDetail($product)->with([
 				'category' => $product->category
 			]);
 		}
 
-		if ($category = Category::where('slug', $slug)->first()) {
+		if ($category = $this->category->where('slug', $slug)->first()) {
 			return $this->productListing($category->products()->visible()->getQuery())->with([
 				'heading' => $category->name,
 				'title' => $category->meta_title,
@@ -77,15 +85,13 @@ class ShopController extends Controller
 		$this->filterPrice($builder, Input::get('price'));
 		$this->sortOrder($builder, Input::get('sort'));
 
-		return View::make('products.listing')->with([
+		return view('ecommerce::products.listing')->with([
 			'items' => $builder->paginate(12),
-			'user' => Auth::user(),
-			'detailUrl' => 'product-detail',
-			'description' => '',
+			'detailRoute' => $this->getDetailRoute()
 		]);
 	}
 
-	protected function productDetail(Product $product)
+	protected function productDetail(ProductInterface $product)
 	{
 		if ($product->variants->count()) {
 			$media = Media::forCollection($product->variants)->get();
@@ -93,12 +99,17 @@ class ShopController extends Controller
 			$media = Media::forModel($product)->get();
 		}
 
-		return View::make('products.product')->with([
+		return view('ecommerce::products.product')->with([
 			'product' => $product,
 			'available' => $product->isAvailable(),
 			'media' => $media,
 			'title' => $product->meta_title
 		]);
+	}
+
+	protected function getDetailRoute()
+	{
+		return 'products.detail';
 	}
 
 	protected function filterPrice(Builder $products, $price)
