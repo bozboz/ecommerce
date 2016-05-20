@@ -1,5 +1,15 @@
 <?php
 
+Route::group(['middleware' => 'web', 'namespace' => 'Bozboz\Ecommerce\Http\Controllers'], function() {
+
+	Route::get('shop', 'ShopController@index');
+	Route::get('shop/{product}', [
+		'as' => 'products.detail',
+		'uses' => 'ShopController@productOrCategory'
+	]);
+
+});
+
 /**
  * Admin routes
  */
@@ -40,6 +50,14 @@ Route::group(['middleware' => 'web', 'prefix' => 'admin', 'namespace' => 'Bozboz
 
 		/* Brands */
 		Route::resource('brands', 'BrandController', ['except' => 'show']);
+
+		/* Attributes */
+		Route::resource('products/attributes/options', 'ProductAttributeOptionController', ['except' => ['create']]);
+		Route::get('products/attributes/options/{attributeId}/create', [
+			'uses' => 'ProductAttributeOptionController@createForAttribute',
+			'as' => 'admin.products.attributes.options.create'
+		]);
+		Route::resource('products/attributes', 'ProductAttributeController');
 	});
 
 	Route::group(['namespace' => 'Shipping\Http\Controllers\Admin'], function()
@@ -56,7 +74,7 @@ Route::group(['middleware' => 'web', 'prefix' => 'admin', 'namespace' => 'Bozboz
 /**
  * Cart
  */
-Route::group(['prefix' => 'cart', 'namespace' => 'Bozboz\Ecommerce\Http\Controllers'], function()
+Route::group(['middleware' => 'web', 'prefix' => 'cart', 'namespace' => 'Bozboz\Ecommerce\Http\Controllers'], function()
 {
 	Route::get('/', [
 		'as' => 'cart',
