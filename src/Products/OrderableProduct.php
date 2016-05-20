@@ -8,13 +8,17 @@ use Bozboz\Ecommerce\Orders\Order;
 use Bozboz\Ecommerce\Orders\Orderable;
 use Bozboz\Ecommerce\Orders\OrderableException;
 use Bozboz\Ecommerce\Products\Product;
+use Bozboz\Ecommerce\Shipping\Shippable;
+use Bozboz\Ecommerce\Shipping\ShippableTrait;
 use Bozboz\Users\User;
 use Breadcrumbs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator as Validator;
 
-class OrderableProduct extends Product implements Orderable
+class OrderableProduct extends Product implements Orderable, Shippable
 {
+    use ShippableTrait;
+
     public function items()
     {
         return $this->morphMany(Item::class, 'orderable');
