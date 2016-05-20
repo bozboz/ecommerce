@@ -30,7 +30,7 @@
             "Bozboz\\Ecommerce\\": "src"
         },
         "files": [
-            "src/helpers.php"
+            "helpers.php"
         ]
     }
 }
