@@ -1,0 +1,1 @@
+{{ link_to(route('products.detail', $product->slug), $product->name) }}
