@@ -2,8 +2,8 @@
 
 namespace Bozboz\Ecommerce\Http\Controllers;
 
-use Bozboz\Ecommerce\Cart\CartStorageInterface;
-use Bozboz\Ecommerce\Order\OrderableException;
+use Bozboz\Ecommerce\Orders\Cart\CartStorageInterface;
+use Bozboz\Ecommerce\Orders\OrderableException;
 use Bozboz\Ecommerce\Products\OrderableProduct;
 use Bozboz\Ecommerce\Voucher\OrderableVoucher;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -21,8 +21,8 @@ class CartController extends Controller
 	{
 		$this->storage = $storage;
 
-		$this->beforeFilter('cart-redirect', ['except' => ['index', 'add', 'addVoucher']]);
-		$this->beforeFilter('basket-timeout');
+		// $this->beforeFilter('cart-redirect', ['except' => ['index', 'add', 'addVoucher']]);
+		// $this->beforeFilter('basket-timeout');
 	}
 
 	public function index()
