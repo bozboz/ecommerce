@@ -18,6 +18,7 @@ class EcommerceServiceProvider extends ServiceProvider
         $this->app->register('Bozboz\Ecommerce\Products\Providers\ProductServiceProvider');
         $this->app->register('Bozboz\Ecommerce\Orders\Providers\OrderServiceProvider');
         $this->app->register('Bozboz\Ecommerce\Checkout\Providers\CheckoutServiceProvider');
+        $this->app->register('Bozboz\Ecommerce\Shipping\Providers\ShippingServiceProvider');
         // $this->app->register(PaymentServiceProvider::class);
 
         $this->app->bind(
