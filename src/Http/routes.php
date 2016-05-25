@@ -40,25 +40,25 @@ Route::group(['middleware' => 'web', 'prefix' => 'admin', 'namespace' => 'Bozboz
 		]);
 	});
 
-	Route::group(['namespace' => 'Products\Http\Controllers\Admin'], function()
-	{
-		/* Products */
-		Route::resource('products', 'ProductController', ['except' => 'show']);
+	// Route::group(['namespace' => 'Products\Http\Controllers\Admin'], function()
+	// {
+	// 	/* Products */
+	// 	Route::resource('products', 'ProductController', ['except' => 'show']);
 
-		/* Categories */
-		Route::resource('categories', 'CategoryController', ['except' => 'show']);
+	// 	/* Categories */
+	// 	Route::resource('categories', 'CategoryController', ['except' => 'show']);
 
-		/* Brands */
-		Route::resource('brands', 'BrandController', ['except' => 'show']);
+	// 	/* Brands */
+	// 	Route::resource('brands', 'BrandController', ['except' => 'show']);
 
-		/* Attributes */
-		Route::resource('products/attributes/options', 'ProductAttributeOptionController', ['except' => ['create']]);
-		Route::get('products/attributes/options/{attributeId}/create', [
-			'uses' => 'ProductAttributeOptionController@createForAttribute',
-			'as' => 'admin.products.attributes.options.create'
-		]);
-		Route::resource('products/attributes', 'ProductAttributeController');
-	});
+	// 	/* Attributes */
+	// 	Route::resource('products/attributes/options', 'ProductAttributeOptionController', ['except' => ['create']]);
+	// 	Route::get('products/attributes/options/{attributeId}/create', [
+	// 		'uses' => 'ProductAttributeOptionController@createForAttribute',
+	// 		'as' => 'admin.products.attributes.options.create'
+	// 	]);
+	// 	Route::resource('products/attributes', 'ProductAttributeController');
+	// });
 
 	Route::group(['namespace' => 'Shipping\Http\Controllers\Admin'], function()
 	{
