@@ -67,9 +67,6 @@ class EcommerceServiceProvider extends ServiceProvider
             $lang = $this->app['translator'];
 
             $menu[$lang->get('ecommerce::ecommerce.menu_name')] = [
-                'Products' => $url->route('admin.products.index'),
-                'Product Attributes' => $url->route('admin.products.attributes.index'),
-                'Categories' => $url->route('admin.categories.index'),
                 'Orders' => $url->route('admin.orders.index'),
                 'Shipping' => $url->route('admin.shipping.index'),
                 'Customers' => $url->route('admin.customers.index'),
