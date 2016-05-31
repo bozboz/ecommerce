@@ -52,6 +52,7 @@ class EcommerceServiceProvider extends ServiceProvider
         $this->publishes([
             "{$packageRoot}/resources/views" => base_path('resources/views/vendor/ecommerce'),
             "{$packageRoot}/resources/lang" => base_path('resources/lang/vendor/ecommerce'),
+            "{$packageRoot}/config/ecommerce.php" => config_path('ecommerce.php'),
         ]);
 
         $this->buildAdminMenu();

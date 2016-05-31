@@ -74,41 +74,43 @@ Route::group(['middleware' => 'web', 'prefix' => 'admin', 'namespace' => 'Bozboz
 /**
  * Cart
  */
-Route::group(['middleware' => 'web', 'prefix' => 'cart', 'namespace' => 'Bozboz\Ecommerce\Http\Controllers'], function()
-{
-	Route::get('/', [
-		'as' => 'cart',
-		'uses' => 'CartController@index'
-	]);
+if (config('ecommerce.cart.route')) {
+	Route::group(['middleware' => 'web', 'prefix' => config('ecommerce.cart.route'), 'namespace' => 'Bozboz\Ecommerce\Http\Controllers'], function()
+	{
+		Route::get('/', [
+			'as' => 'cart',
+			'uses' => 'CartController@index'
+		]);
 
-	Route::post('/', [
-		'uses' => 'CartController@update',
-		'as' => 'cart.update'
-	]);
+		Route::post('/', [
+			'uses' => 'CartController@update',
+			'as' => 'cart.update'
+		]);
 
-	Route::post('items', [
-		'as' => 'cart.add',
-		'uses' => 'CartController@add'
-	]);
+		Route::post('items', [
+			'as' => 'cart.add',
+			'uses' => 'CartController@add'
+		]);
 
-	Route::post('voucher', [
-		'as' => 'cart.add-voucher',
-		'uses' => 'CartController@addVoucher'
-	]);
+		Route::post('voucher', [
+			'as' => 'cart.add-voucher',
+			'uses' => 'CartController@addVoucher'
+		]);
 
-	Route::delete('/', [
-		'as' => 'cart.clear',
-		'uses' => 'CartController@destroy'
-	]);
+		Route::delete('/', [
+			'as' => 'cart.clear',
+			'uses' => 'CartController@destroy'
+		]);
 
-	Route::delete('items/{id}', [
-		'as' => 'cart.remove-item',
-		'uses' => 'CartController@remove'
-	]);
+		Route::delete('items/{id}', [
+			'as' => 'cart.remove-item',
+			'uses' => 'CartController@remove'
+		]);
 
-	Route::get('items/remove/{id}/{sessionId}', [
-		'as' => 'cart.remove-item',
-		'uses' => 'CartController@remove',
-		'before' => 'sessionProtect'
-	]);
-});
+		Route::get('items/remove/{id}/{sessionId}', [
+			'as' => 'cart.remove-item',
+			'uses' => 'CartController@remove',
+			'before' => 'sessionProtect'
+		]);
+	});
+}

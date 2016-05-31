@@ -2,6 +2,8 @@
 
 return [
 
-	'foo' => 'bar'
+	'cart' => [
+        'route' => 'cart',
+    ],
 
 ];
