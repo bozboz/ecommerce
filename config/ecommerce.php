@@ -6,4 +6,6 @@ return [
         'route' => 'cart',
     ],
 
+    'register_account_enabled' => true
+
 ];
