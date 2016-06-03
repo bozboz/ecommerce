@@ -2,10 +2,11 @@
 
 namespace Bozboz\Ecommerce\Orders;
 
+use Bozboz\Ecommerce\Checkout\Checkoutable;
 use Bozboz\Ecommerce\Orders\Order;
 use Session;
 
-class OrderRepository
+class OrderRepository implements Checkoutable
 {
     private $order;
 
@@ -14,13 +15,23 @@ class OrderRepository
         $this->order = $order;
     }
 
-    public function lookupOrder()
+    public function getCheckoutable()
     {
         return $this->order->find(Session::get('order'));
     }
 
-    public function hasOrder()
+    public function hasCheckoutable()
     {
         return Session::has('order');
+    }
+
+    public function getCompletedScreen($order)
+    {
+        return $order->getCheckoutProgress();
+    }
+
+    public function markScreenAsComplete($order, $screenAlias)
+    {
+        $order->updateCheckoutProgress($screenAlias);
     }
 }
