@@ -35,8 +35,8 @@ class OrderRepository implements Checkoutable
         $order->updateCheckoutProgress($screenAlias);
     }
 
-    public function canContinue($order)
+    public function isComplete($order)
     {
-        return ! $order->getStateMachine()->getCurrentState()->isFinal();
+        return $order->isComplete();
     }
 }
