@@ -18,6 +18,7 @@ class CreateShippingMethodsTable extends Migration {
 
 			$table->increments('id');
 			$table->string('name');
+			$table->text('description');
 			$table->boolean('is_default');
 			$table->integer('shipping_band_id')->unsigned();
 			$table->timestamps();

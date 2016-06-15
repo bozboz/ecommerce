@@ -43,7 +43,7 @@ class OrderableShippingMethod extends ShippingMethod implements Orderable
 
 		$priceField = $countryPrice->getModel()->getRawPriceField();
 
-		return $countryPrice->pluck($priceField) ?: $worldwidePrice->pluck($priceField);
+		return $countryPrice->value($priceField) ?: $worldwidePrice->value($priceField);
 	}
 
 	public function calculateWeight($quantity)

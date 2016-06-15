@@ -21,6 +21,10 @@ Route::group(['middleware' => 'web', 'prefix' => 'admin', 'namespace' => 'Bozboz
 		Route::get('orders/csv', [
 			'uses' => 'OrderController@downloadCsv'
 		]);
+		Route::post('orders/transition/{id}/{transition}', [
+			'uses' => 'OrderController@transitionState',
+			'as' => 'admin.orders.transition-state'
+		]);
 
 		/* Customers */
 		Route::resource('customers', 'CustomerController', ['except' => 'show']);

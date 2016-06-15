@@ -64,4 +64,11 @@ abstract class OrderableProduct extends Product implements Orderable, Shippable
     {
         return $this->attributes[$this->getRawPriceField()] * $quantity;
     }
+
+    public function purchased($quantity)
+    {
+        if ($this->stock_level > 0) {
+            $this->decrement('stock_level', $quantity);
+        }
+    }
 }
