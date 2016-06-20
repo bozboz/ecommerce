@@ -30,6 +30,10 @@ class OrderableShippingMethod extends ShippingMethod implements Orderable
 	{
 	}
 
+	public function purchased($quanitity)
+	{
+	}
+
 	public function calculatePrice($quantity, Order $order)
 	{
 		$country = $order->shippingAddress ? $order->shippingAddress->country : 'GB';
