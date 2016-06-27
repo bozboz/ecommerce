@@ -8,7 +8,7 @@ use Session;
 
 class OrderRepository implements CheckoutableRepository
 {
-    private $order;
+    protected $order;
 
     public function __construct(CheckoutableOrder $order)
     {
