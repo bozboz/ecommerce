@@ -100,7 +100,7 @@ class CartController extends Controller
 	{
 		$this->storage->getCartOrFail()->clearItems();
 
-		return Redirect::home();
+		return Redirect::route('cart');
 	}
 
 	protected function redirectBack()
