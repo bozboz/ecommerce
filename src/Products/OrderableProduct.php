@@ -70,5 +70,9 @@ abstract class OrderableProduct extends Product implements Orderable, Shippable
         if ($this->stock_level > 0) {
             $this->decrement('stock_level', $quantity);
         }
+
+        if ($this->stock_level === 0) {
+            event(new Events\StockLevelDepleted($this));
+        }
     }
 }
