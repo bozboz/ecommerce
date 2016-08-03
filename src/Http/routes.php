@@ -13,6 +13,12 @@ Route::group(['middleware' => 'web', 'prefix' => 'admin', 'namespace' => 'Bozboz
 			'uses' => 'OrderController@downloadInvoice',
 			'as' => 'admin.orders.invoice'
 		]);
+		Route::post('orders/bulk-edit', [
+			'uses' => 'OrderController@bulkEdit'
+		]);
+		Route::post('orders/bulk-update', [
+			'uses' => 'OrderController@bulkUpdate'
+		]);
 		Route::post('orders/{id}/refund', [
 			'uses' => 'OrderController@refund',
 			'as' => 'admin.orders.refund',

@@ -57,6 +57,9 @@ class EcommerceServiceProvider extends ServiceProvider
             require "{$packageRoot}/src/Http/routes.php";
         }
 
+        $permissions = $this->app['permission.handler'];
+        require "$packageRoot/src/permissions.php";
+
         $this->loadViewsFrom("{$packageRoot}/resources/views", 'ecommerce');
 
         $this->loadTranslationsFrom("{$packageRoot}/resources/lang", 'ecommerce');
@@ -76,14 +79,16 @@ class EcommerceServiceProvider extends ServiceProvider
 
         $event->listen('admin.renderMenu', function($menu)
         {
-            $url = $this->app['url'];
-            $lang = $this->app['translator'];
+            if ($menu->gate('ecommerce')) {
+                $url = $this->app['url'];
+                $lang = $this->app['translator'];
 
-            $menu[$lang->get('ecommerce::ecommerce.menu_name')] = [
-                'Orders' => $url->route('admin.orders.index'),
-                'Shipping' => $url->route('admin.shipping.index'),
-                'Customers' => $url->route('admin.customers.index'),
-            ];
+                $menu[$lang->get('ecommerce::ecommerce.menu_name')] = [
+                    'Orders' => $url->route('admin.orders.index'),
+                    'Shipping' => $url->route('admin.shipping.index'),
+                    'Customers' => $url->route('admin.customers.index'),
+                ];
+            }
         });
     }
 }
