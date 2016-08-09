@@ -62,7 +62,13 @@ class CartController extends Controller
 			return Redirect::route('cart')->withErrors($e->getErrors());
 		}
 
-		return Redirect::route('cart')->with('product_added_to_cart', $item->name);
+		if (Input::has('redirect_after')) {
+			$redirect = redirect(Input::get('redirect_after'));
+		} else {
+			$redirect = redirect()->route('cart');
+		}
+
+		return $redirect->with('product_added_to_cart', $item->name);
 	}
 
 	public function remove($id)
