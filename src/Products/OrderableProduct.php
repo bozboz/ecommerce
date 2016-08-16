@@ -67,8 +67,11 @@ abstract class OrderableProduct extends Product implements Orderable, Shippable
 
     public function purchased($quantity)
     {
-        if ($this->stock_level > 0) {
+        if ($this->stock_level > $quantity) {
             $this->decrement('stock_level', $quantity);
+        } else {
+            $this->stock_level = 0;
+            $this->save();
         }
 
         if ($this->stock_level === 0) {
