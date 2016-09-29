@@ -2,15 +2,17 @@
 
 namespace Bozboz\Ecommerce\Http\Controllers;
 
+use App\Ecommerce\Shipping\Mailman;
+use Bozboz\Ecommerce\Checkout\EmptyCartException;
 use Bozboz\Ecommerce\Orders\Cart\CartStorageInterface;
 use Bozboz\Ecommerce\Orders\OrderableException;
 use Bozboz\Ecommerce\Products\OrderableProduct;
-use Bozboz\Ecommerce\Voucher\OrderableVoucher;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\View;
 
 class CartController extends Controller
@@ -25,45 +27,56 @@ class CartController extends Controller
 		// $this->beforeFilter('basket-timeout');
 	}
 
-	public function index()
+	public function index(Mailman $mailman)
 	{
 		$cart = $this->storage->getCart();
 
+		if ($cart) {
+			$customerCountry = $cart->shippingAddress ? $cart->shippingAddress->country : 'GB';
+			$deliveryMethods = $mailman->getValidDeliveryMethods($cart, $customerCountry);
+		} else {
+			$deliveryMethods = [];
+		}
+
 		return View::make('ecommerce::cart.cart')->with([
-			'cart' => $cart
+			'cart' => $cart,
+			'deliveryMethods' => $deliveryMethods,
 		]);
 	}
 
-	public function addVoucher()
+	public function addVoucher(Request $request, $factory)
 	{
 		try {
-			$voucherCode = Input::get('voucher_code');
-			$voucher = OrderableVoucher::whereCode($voucherCode)->firstOrFail();
-			$this->cart->add($voucherCode);
+			$cart = $this->storage->getCart();
+			$voucherCode = $request->get('voucher_code');
+			$voucher = $factory->whereCode($voucherCode)->firstOrFail();
+			$cart->add($voucher);
 		} catch (Exception $e) {
+			return redirect()->route('cart')->withErrors($e->getErrors());
+		} catch (OrderableException $e) {
 			return Redirect::route('cart')->withErrors($e->getErrors());
 		} catch (ModelNotFoundException $e) {
-			return Redirect::route('cart')->withErrors(sprintf('Voucher code "%s" not recognised', $voucherCode));
+			return redirect()->route('cart')->withErrors(sprintf('Voucher code "%s" not recognised', $voucherCode));
 		}
 		return Redirect::back();
 	}
 
-	public function add()
+	public function add(Request $request)
 	{
 		$cart = $this->storage->getOrCreateCart();
 
 		try {
-			$model = Input::get('orderable_type', OrderableProduct::class);
+			$model = $request->get('orderable_type', OrderableProduct::class);
 			$item = $cart->add(
-				$model::find(Input::get('orderable_id')),
-				Input::get('quantity', 1)
+				$model::find($request->get('orderable_id')),
+				$request->get('quantity', 1)
 			);
 		} catch (OrderableException $e) {
 			return Redirect::route('cart')->withErrors($e->getErrors());
 		}
 
-		if (Input::has('redirect_after')) {
-			$redirect = redirect(Input::get('redirect_after'));
+		if ($request->has('redirect_after')) {
+			$redirect = redirect($request->get('redirect_after'));
 		} else {
 			$redirect = redirect()->route('cart');
 		}
@@ -71,35 +84,39 @@ class CartController extends Controller
 		return $redirect->with('product_added_to_cart', $item->name);
 	}
 
-	public function remove($id)
+	public function remove(Request $request, $id)
 	{
 		$this->storage->getCartOrFail()->removeById($id);
 
-		return $this->redirectBack();
+		return $this->redirectBack($request);
 	}
 
-	public function update()
+	public function update(Request $request, Container $container)
 	{
 		$cart = $this->storage->getCartOrFail();
 
-		if (Input::has('remove')) {
-			foreach(Input::get('remove') as $id) {
+		if ($request->has('remove')) {
+			foreach($request->get('remove') as $id) {
 				$cart->removeById($id);
 			}
-			return $this->redirectBack();
+			return $this->redirectBack($request);
 		}
 
-		if (Input::has('clear')) {
+		if ($request->has('clear')) {
 			return $this->destroy();
 		}
 
+		if ($request->has('voucher') || $request->get('voucher_code')) {
+			return $this->addVoucher($request, $container->make('voucher-factory'));
+		}
+
 		try {
-			$cart->updateQuantities(Input::get('quantity'));
+			$cart->updateQuantities($request->get('quantity'));
 		} catch (OrderableException $e) {
 			return Redirect::route('cart')->withErrors($e->getErrors());
 		}
 
-		return $this->redirectBack();
+		return $this->redirectBack($request);
 	}
 
 	public function destroy()
@@ -109,9 +126,9 @@ class CartController extends Controller
 		return Redirect::route('cart');
 	}
 
-	protected function redirectBack()
+	protected function redirectBack($request)
 	{
-		if (Request::header('referer')) {
+		if ($request->header('referer')) {
 			return Redirect::back();
 		} else {
 			return Redirect::route('cart');
