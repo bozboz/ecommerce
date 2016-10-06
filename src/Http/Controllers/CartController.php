@@ -86,7 +86,11 @@ class CartController extends Controller
 
 	public function remove(Request $request, $id)
 	{
-		$this->storage->getCartOrFail()->removeById($id);
+		$cart = $this->storage->getCart();
+
+		if ($cart) {
+			$cart->removeById($id);
+		}
 
 		return $this->redirectBack($request);
 	}
