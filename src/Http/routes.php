@@ -34,9 +34,21 @@ Route::group(['middleware' => 'web', 'prefix' => 'admin', 'namespace' => 'Bozboz
 
 		/* Customers */
 		Route::resource('customers', 'CustomerController', ['except' => 'show']);
-		Route::put('customers/{customer}/address/{address}', [
-			'uses' => 'CustomerController@updateAddress',
+		Route::get('customers/{customer}/address/create', [
+			'uses' => 'AddressController@createForCustomer',
+			'as' => 'admin.customer.address.create'
+		]);
+		Route::post('customers/address/store', [
+			'uses' => 'AddressController@store',
+			'as' => 'admin.customer.address.store'
+		]);
+		Route::put('customers/address/{address}', [
+			'uses' => 'AddressController@updateForCustomer',
 			'as' => 'admin.customer.address.update'
+		]);
+		Route::delete('customers/address/{address}', [
+			'uses' => 'AddressController@destroyForCustomer',
+			'as' => 'admin.customer.address.destroy'
 		]);
 	});
 
