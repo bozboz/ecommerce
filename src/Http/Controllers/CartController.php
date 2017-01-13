@@ -72,7 +72,7 @@ class CartController extends Controller
 				$request->get('quantity', 1)
 			);
 		} catch (OrderableException $e) {
-			return Redirect::route('cart')->withErrors($e->getErrors());
+			return Redirect::back()->withErrors($e->getErrors());
 		}
 
 		if ($request->has('redirect_after')) {
