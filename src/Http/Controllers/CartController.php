@@ -4,6 +4,7 @@ namespace Bozboz\Ecommerce\Http\Controllers;
 
 use App\Ecommerce\Shipping\Mailman;
 use Bozboz\Ecommerce\Checkout\EmptyCartException;
+use Bozboz\Ecommerce\Orders\Cart\CartMissingException;
 use Bozboz\Ecommerce\Orders\Cart\CartStorageInterface;
 use Bozboz\Ecommerce\Orders\OrderableException;
 use Bozboz\Ecommerce\Products\OrderableProduct;
@@ -97,7 +98,11 @@ class CartController extends Controller
 
 	public function update(Request $request, Container $container)
 	{
-		$cart = $this->storage->getCartOrFail();
+		try {
+			$cart = $this->storage->getCartOrFail();
+		} catch (CartMissingException $e) {
+			return redirect()->route('cart');
+		}
 
 		if ($request->has('remove')) {
 			foreach($request->get('remove') as $id) {
