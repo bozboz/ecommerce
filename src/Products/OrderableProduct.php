@@ -39,17 +39,20 @@ abstract class OrderableProduct extends Product implements Orderable, Shippable
     {
         $validation = Validator::make(
             array('stock' => $quantity),
-            array('stock' => 'numeric|max:' . $this->stock_level),
+            array('stock' => 'numeric|max:' . ($this->stock_level + $item->quantity)),
             array('max' => 'Sorry. Some or all of the requested items are out of stock')
         );
 
         if ($validation->fails()) {
             if ($validation->errors()->first('stock') && $this->stock_level) {
-                $item->quantity = $this->stock_level;
+                $item->quantity += $this->stock_level;
                 $item->total_weight = $this->calculateWeight($item->quantity);
                 $item->calculateNet($this, $order);
                 $item->calculateGross();
                 $item->save();
+
+                $this->stock_level = 0;
+                $this->save();
             }
             throw new OrderableException($validation);
         }
