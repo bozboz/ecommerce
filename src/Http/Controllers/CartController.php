@@ -2,19 +2,18 @@
 
 namespace Bozboz\Ecommerce\Http\Controllers;
 
-use App\Ecommerce\Shipping\Mailman;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Input;
+use Bozboz\Ecommerce\Orders\Orderable;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Contracts\Container\Container;
+use Bozboz\Ecommerce\Orders\OrderableException;
 use Bozboz\Ecommerce\Checkout\EmptyCartException;
 use Bozboz\Ecommerce\Orders\Cart\CartMissingException;
 use Bozboz\Ecommerce\Orders\Cart\CartStorageInterface;
-use Bozboz\Ecommerce\Orders\OrderableException;
-use Bozboz\Ecommerce\Products\OrderableProduct;
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\View;
 
 class CartController extends Controller
 {
@@ -28,21 +27,11 @@ class CartController extends Controller
 		// $this->beforeFilter('basket-timeout');
 	}
 
-	public function index(Mailman $mailman)
+	public function index()
 	{
 		$cart = $this->storage->getCart();
 
-		if ($cart) {
-			$customerCountry = $cart->shippingAddress ? $cart->shippingAddress->country : 'GB';
-			$deliveryMethods = $mailman->getValidDeliveryMethods($cart, $customerCountry);
-		} else {
-			$deliveryMethods = [];
-		}
-
-		return View::make('ecommerce::cart.cart')->with([
-			'cart' => $cart,
-			'deliveryMethods' => $deliveryMethods,
-		]);
+		return View::make('orders::cart.cart')->with(compact('cart'));
 	}
 
 	public function addVoucher(Request $request, $factory)
@@ -67,7 +56,7 @@ class CartController extends Controller
 		$cart = $this->storage->getOrCreateCart();
 
 		try {
-			$model = $request->get('orderable_type', OrderableProduct::class);
+			$model = $request->get('orderable_type', Orderable::class);
 			$item = $cart->add(
 				$model::find($request->get('orderable_id')),
 				$request->get('quantity', 1)

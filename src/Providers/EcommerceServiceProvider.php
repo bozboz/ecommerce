@@ -18,7 +18,7 @@ class EcommerceServiceProvider extends ServiceProvider
             'Bozboz\Ecommerce\Products\Listeners\Purchased',
         ],
         'Bozboz\Ecommerce\Orders\Events\OrderComplete' => [
-            'Bozboz\Ecommerce\Orders\Customers\Addresses\LinkAddressToCustomer',
+            'Bozboz\Ecommerce\Orders\Customers\Addresses\Listeners\LinkAddressToCustomer',
         ],
         'Bozboz\Ecommerce\Orders\Events\OrderStateTransition' => [
             'Bozboz\Ecommerce\Orders\Listeners\Notify',
@@ -73,7 +73,7 @@ class EcommerceServiceProvider extends ServiceProvider
         $this->buildAdminMenu();
     }
 
-    private function buildAdminMenu()
+    protected function buildAdminMenu()
     {
         $event = $this->app['events'];
 
