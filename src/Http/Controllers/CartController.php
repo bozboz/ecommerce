@@ -4,6 +4,7 @@ namespace Bozboz\Ecommerce\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Input;
 use Bozboz\Ecommerce\Orders\Orderable;
@@ -34,25 +35,10 @@ class CartController extends Controller
 		return View::make('orders::cart.cart')->with(compact('cart'));
 	}
 
-	public function addVoucher(Request $request, $factory)
-	{
-		try {
-			$cart = $this->storage->getCart();
-			$voucherCode = $request->get('voucher_code');
-			$voucher = $factory->whereCode($voucherCode)->firstOrFail();
-			$cart->add($voucher);
-		} catch (Exception $e) {
-			return redirect()->route('cart')->withErrors($e->getErrors());
-		} catch (OrderableException $e) {
-			return Redirect::route('cart')->withErrors($e->getErrors());
-		} catch (ModelNotFoundException $e) {
-			return redirect()->route('cart')->withErrors(sprintf('Voucher code "%s" not recognised', $voucherCode));
-		}
-		return Redirect::back();
-	}
-
 	public function add(Request $request)
 	{
+		DB::beginTransaction();
+
 		$cart = $this->storage->getOrCreateCart();
 
 		try {
@@ -71,22 +57,27 @@ class CartController extends Controller
 			$redirect = redirect()->route('cart');
 		}
 
+		DB::commit();
+
 		return $redirect->with('product_added_to_cart', $item->name);
 	}
 
 	public function remove(Request $request, $id)
 	{
+		DB::beginTransaction();
 		$cart = $this->storage->getCart();
 
 		if ($cart) {
 			$cart->removeById($id);
 		}
+		DB::commit();
 
 		return $this->redirectBack($request);
 	}
 
 	public function update(Request $request, Container $container)
 	{
+		DB::beginTransaction();
 		try {
 			$cart = $this->storage->getCartOrFail();
 		} catch (CartMissingException $e) {
@@ -97,23 +88,23 @@ class CartController extends Controller
 			foreach($request->get('remove') as $id) {
 				$cart->removeById($id);
 			}
+			DB::commit();
 			return $this->redirectBack($request);
 		}
 
 		if ($request->has('clear')) {
+			DB::commit();
 			return $this->destroy();
-		}
-
-		if ($request->has('voucher') || $request->get('voucher_code')) {
-			return $this->addVoucher($request, $container->make('voucher-factory'));
 		}
 
 		try {
 			$cart->updateQuantities($request->get('quantity'));
 		} catch (OrderableException $e) {
+			DB::commit();
 			return Redirect::route('cart')->withErrors($e->getErrors());
 		}
 
+		DB::commit();
 		return $this->redirectBack($request);
 	}
 

@@ -29,7 +29,7 @@ class CreateOrderItemsTable extends Migration {
 			$table->integer('total_price_pence_ex_vat');
 			$table->integer('total_price_pence');
 			$table->integer('total_weight');
-			$table->string('image');
+			$table->string('image')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
 		});
