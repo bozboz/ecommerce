@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Input;
 use Bozboz\Ecommerce\Orders\Orderable;
 use Illuminate\Support\Facades\Redirect;
+use Bozboz\Ecommerce\Orders\OrderableFactory;
 use Illuminate\Contracts\Container\Container;
 use Bozboz\Ecommerce\Orders\OrderableException;
 use Bozboz\Ecommerce\Checkout\EmptyCartException;
@@ -37,30 +38,52 @@ class CartController extends Controller
 
 	public function add(Request $request)
 	{
-		DB::beginTransaction();
+        $cart = $this->storage->getOrCreateCart();
 
-		$cart = $this->storage->getOrCreateCart();
+        DB::beginTransaction();
 
-		try {
-			$model = $request->get('orderable_type', Orderable::class);
-			$item = $cart->add(
-				$model::find($request->get('orderable_id')),
-				$request->get('quantity', 1)
-			);
-		} catch (OrderableException $e) {
-			return Redirect::back()->withErrors($e->getErrors());
-		}
+        try {
+            if (count($request->get('products'))) {
+                $itemName = collect($request->get('products'))->map(function($item) use ($cart) {
+                    if ($item['quantity'] < 1) return false;
 
-		if ($request->has('redirect_after')) {
-			$redirect = redirect($request->get('redirect_after'));
-		} else {
-			$redirect = redirect()->route('cart');
-		}
+                    return $this->addSingleItem(
+                        $cart,
+                        app($item['orderable_factory']),
+                        $item['orderable'],
+                        $item['quantity'] ?: 1
+                    )->name;
+                })->filter()->implode(', ');
+            } else {
+                $itemName = $this->addSingleItem(
+                    $cart, app($request->get('orderable_factory')),
+                    $request->get('orderable'),
+                    $request->get('quantity', 1)
+                )->name;
+            }
 
-		DB::commit();
+        } catch (OrderableException $e) {
+            return Redirect::back()->withErrors($e->getErrors());
+        }
 
-		return $redirect->with('product_added_to_cart', $item->name);
+        DB::commit();
+
+        if ($request->has('redirect_after')) {
+            $redirect = redirect($request->get('redirect_after'));
+        } else {
+            $redirect = redirect()->route('cart');
+        }
+
+        return $redirect->with('product_added_to_cart', $itemName);
 	}
+
+    private function addSingleItem($cart, OrderableFactory $factory, $orderable, $quantity)
+    {
+        return $cart->add(
+            $factory->find($orderable),
+            $quantity
+        );
+    }
 
 	public function remove(Request $request, $id)
 	{
