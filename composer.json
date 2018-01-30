@@ -15,7 +15,7 @@
         "bozboz/admin": "2.*",
         "bozboz/products": "dev-master",
         "bozboz/orders": "dev-master",
-        "bozboz/checkout": "dev-laravel5",
+        "bozboz/checkout": "~2",
         "bozboz/payment": "dev-master",
         "bozboz/shipping": "dev-master"
     },
