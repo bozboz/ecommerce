@@ -24,9 +24,6 @@ class CartController extends Controller
 	public function __construct(CartStorageInterface $storage)
 	{
 		$this->storage = $storage;
-
-		// $this->beforeFilter('cart-redirect', ['except' => ['index', 'add', 'addVoucher']]);
-		// $this->beforeFilter('basket-timeout');
 	}
 
 	public function index()

@@ -84,11 +84,6 @@ if (config('ecommerce.cart.route')) {
 			'uses' => 'CartController@add'
 		]);
 
-		Route::post('voucher', [
-			'as' => 'cart.add-voucher',
-			'uses' => 'CartController@addVoucher'
-		]);
-
 		Route::delete('/', [
 			'as' => 'cart.clear',
 			'uses' => 'CartController@destroy'
