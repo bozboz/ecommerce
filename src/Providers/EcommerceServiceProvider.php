@@ -13,18 +13,6 @@ use Omnipay\Omnipay;
 
 class EcommerceServiceProvider extends ServiceProvider
 {
-    protected $listen = [
-        'Bozboz\Ecommerce\Orders\Events\ItemOrdered' => [
-            'Bozboz\Ecommerce\Products\Listeners\Purchased',
-        ],
-        'Bozboz\Ecommerce\Orders\Events\OrderComplete' => [
-            'Bozboz\Ecommerce\Orders\Customers\Addresses\Listeners\LinkAddressToCustomer',
-        ],
-        'Bozboz\Ecommerce\Orders\Events\OrderStateTransition' => [
-            'Bozboz\Ecommerce\Orders\Listeners\Notify',
-        ],
-    ];
-
     public function register()
     {
         $this->app->register('Bozboz\Ecommerce\Products\Providers\ProductServiceProvider');
