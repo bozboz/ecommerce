@@ -16,7 +16,7 @@
         "bozboz/products": "dev-master",
         "bozboz/orders": "dev-master",
         "bozboz/checkout": "~2",
-        "bozboz/payment": "dev-master",
+        "bozboz/payment": "dev-stripe-implementation",
         "bozboz/shipping": "dev-master"
     },
     "repositories": [
