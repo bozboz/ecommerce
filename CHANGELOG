@@ -1,0 +1,5 @@
+# Ecommerce Changelog
+
+## v1.2.0 (17-08-2018)
+Added Changelog
+Updated composer.json to use v1.0.0 of orders and payment, instead of dev-master
