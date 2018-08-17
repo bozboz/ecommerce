@@ -14,9 +14,9 @@
     "require": {
         "bozboz/admin": "2.*",
         "bozboz/products": "dev-master",
-        "bozboz/orders": "dev-master",
+        "bozboz/orders": "1.0.0",
         "bozboz/checkout": "~2",
-        "bozboz/payment": "dev-master",
+        "bozboz/payment": "1.0.0",
         "bozboz/shipping": "dev-master"
     },
     "repositories": [
