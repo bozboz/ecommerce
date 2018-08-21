@@ -13,11 +13,11 @@
     ],
     "require": {
         "bozboz/admin": "2.*",
-        "bozboz/products": "dev-master",
+        "bozboz/products": "1.0.0",
         "bozboz/orders": "1.0.0",
         "bozboz/checkout": "~2",
         "bozboz/payment": "1.0.0",
-        "bozboz/shipping": "dev-master"
+        "bozboz/shipping": "1.0.0"
     },
     "repositories": [
         {
