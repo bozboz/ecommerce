@@ -14,7 +14,7 @@
     "require": {
         "bozboz/admin": "2.*",
         "bozboz/products": "1.0.0",
-        "bozboz/orders": "1.0.0",
+        "bozboz/orders": "1.0.1",
         "bozboz/checkout": "~2",
         "bozboz/payment": "1.0.0",
         "bozboz/shipping": "1.0.0"
