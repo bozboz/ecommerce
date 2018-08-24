@@ -17,7 +17,7 @@
         "bozboz/orders": "1.0.2",
         "bozboz/checkout": "~2",
         "bozboz/payment": "1.0.0",
-        "bozboz/shipping": "1.0.1"
+        "bozboz/shipping": "1.0.2"
     },
     "repositories": [
         {
