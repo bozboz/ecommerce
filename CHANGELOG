@@ -10,3 +10,7 @@ Updated composer.json to use v1.0.0 of products and shipping, instead of dev-mas
 ## v1.2.2
 Update Orders package dependancy to remove Benton fix.
 Update Shipping package's Orders package dependancy to remove Benton fix.
+
+## v1.2.3
+Update Orders package to remove CustomerInterface change
+Update Shipping package to update Orders package.
