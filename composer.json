@@ -13,11 +13,11 @@
     ],
     "require": {
         "bozboz/admin": "2.*",
-        "bozboz/products": "dev-master",
-        "bozboz/orders": "dev-master",
+        "bozboz/products": "dev-wired-sussex",
+        "bozboz/orders": "dev-wired-sussex",
         "bozboz/checkout": "~2",
-        "bozboz/payment": "dev-stripe-implementation",
-        "bozboz/shipping": "dev-master"
+        "bozboz/payment": "dev-wired-sussex",
+        "bozboz/shipping": "dev-wired-sussex"
     },
     "repositories": [
         {
